@@ -21,4 +21,4 @@ test('you can paginate automatically through many pages of results', function ()
 
 test('you can paginate asynchronously through many pages of results', function () {
     //
-});
+})->skip();
