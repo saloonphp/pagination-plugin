@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sammyjo20\Package;
 
 use \Iterator;
-use Saloon\Contracts\Connector;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
+use Saloon\Contracts\Connector;
 
 abstract class PagedPaginator implements Iterator
 {

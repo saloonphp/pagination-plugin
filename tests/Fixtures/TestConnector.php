@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sammyjo20\Package\Tests\Fixtures;
 
-use Saloon\Contracts\HasPagination;
-use Saloon\Contracts\Paginator;
-use Saloon\Contracts\Request;
 use Saloon\Http\Connector;
-use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
-use Sammyjo20\Package\PagedPaginator;
+use Saloon\Contracts\Request;
 use Sammyjo20\Package\TestPaginator;
+use Sammyjo20\Package\PagedPaginator;
+use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
 
 class TestConnector extends Connector
 {

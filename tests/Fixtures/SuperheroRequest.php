@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sammyjo20\Package\Tests\Fixtures;
 
 use Saloon\Enums\Method;
