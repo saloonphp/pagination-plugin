@@ -211,7 +211,7 @@ class SuperheroPaginator extends PagedPaginator
 ```
 
 > **Note**
-> You don't need to define the `isLastPage` when using the trait.
+> You don't need to define the `isLastPage` when using the trait unless you're using synchronous pagination too.
 
 Now, when using the paginator, make sure to set it in asynchronous mode. When you iterate over each item, you will retrieve a `PromiseInterface` instance and not a response.
 
