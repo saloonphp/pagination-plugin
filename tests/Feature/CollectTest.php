@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Saloon\Contracts\Response;
 use Illuminate\Support\Collection;
-use Sammyjo20\Package\TestPagedPaginator;
-use Sammyjo20\Package\Tests\Fixtures\TestConnector;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroPagedRequest;
+use Sammyjo20\SaloonPagination\TestPagedPaginator;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
 
 test('can collect through paginated responses and not items', function () {
     $connector = new TestConnector();

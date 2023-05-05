@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
-use Sammyjo20\Package\TestPagedPaginator;
-use Sammyjo20\Package\TestCursorPaginator;
-use Sammyjo20\Package\TestOffsetPaginator;
-use Sammyjo20\Package\Tests\Fixtures\TestConnector;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroCursorRequest;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Sammyjo20\SaloonPagination\TestPagedPaginator;
+use Sammyjo20\SaloonPagination\TestCursorPaginator;
+use Sammyjo20\SaloonPagination\TestOffsetPaginator;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroCursorRequest;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
 
 test('you can paginate automatically through many pages of results with paged pagination', function () {
     $connector = new TestConnector();

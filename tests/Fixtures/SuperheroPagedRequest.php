@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package\Tests\Fixtures;
+namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

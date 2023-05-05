@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package\Tests\Fixtures;
+namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
 use Saloon\Http\Connector;
 use Saloon\Contracts\Request;
-use Sammyjo20\Package\TestPagedPaginator;
 use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
-use Sammyjo20\Package\Paginators\PagedPaginator;
+use Sammyjo20\SaloonPagination\TestPagedPaginator;
+use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
 
 class TestConnector extends Connector
 {

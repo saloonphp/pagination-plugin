@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package;
+namespace Sammyjo20\SaloonPagination;
 
 use Saloon\Contracts\Response;
-use Sammyjo20\Package\Paginators\CursorPaginator;
+use Sammyjo20\SaloonPagination\Paginators\CursorPaginator;
 
 class TestCursorPaginator extends CursorPaginator
 {

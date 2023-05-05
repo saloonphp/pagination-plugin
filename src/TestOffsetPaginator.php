@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package;
+namespace Sammyjo20\SaloonPagination;
 
 use Saloon\Contracts\Response;
-use Sammyjo20\Package\Paginators\OffsetPaginator;
+use Sammyjo20\SaloonPagination\Paginators\OffsetPaginator;
 
 class TestOffsetPaginator extends OffsetPaginator
 {

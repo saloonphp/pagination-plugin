@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package\Paginators;
+namespace Sammyjo20\SaloonPagination\Paginators;
 
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Connector;

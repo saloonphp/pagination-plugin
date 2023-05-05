@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\Package\Paginators;
+namespace Sammyjo20\SaloonPagination\Paginators;
 
 use Iterator;
 use Saloon\Helpers\Helpers;
@@ -11,7 +11,7 @@ use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
-use Sammyjo20\Package\Traits\HasAsyncPagination;
+use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
 
 abstract class Paginator implements Iterator
 {

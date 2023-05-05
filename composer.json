@@ -1,5 +1,5 @@
 {
-    "name": "sammyjo20/package-template",
+    "name": "sammyjo20/saloon-pagination",
     "description": "Description",
     "license": "MIT",
     "type": "library",
@@ -25,8 +25,8 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Sammyjo20\\Package\\": "src/",
-            "Sammyjo20\\Package\\Tests\\": "tests/"
+            "Sammyjo20\\SaloonPagination\\": "src/",
+            "Sammyjo20\\SaloonPagination\\Tests\\": "tests/"
         }
     },
     "config": {

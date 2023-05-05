@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Collection;
-use Sammyjo20\Package\TestAsyncPagedPaginator;
-use Sammyjo20\Package\TestAsyncOffsetPaginator;
-use Sammyjo20\Package\Tests\Fixtures\TestConnector;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Sammyjo20\SaloonPagination\TestAsyncPagedPaginator;
+use Sammyjo20\SaloonPagination\TestAsyncOffsetPaginator;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
 
 test('you can paginate asynchronously through many pages of results with paged pagination', function () {
     $connector = new TestConnector();
