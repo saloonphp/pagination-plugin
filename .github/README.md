@@ -154,11 +154,10 @@ class SuperheroPaginator extends CursorPaginator
 }
 ```
 
-When using the paginator, you will need to provide an additional argument to define the "per-page limit" of the paginator
-this is so Saloon can calculate the limit/offset accordingly.
+When using the paginator, you just need to pass in a connector and a request.
 
 ```php
-$paginator = new SuperheroPaginator($connector, $request, perPageLimit: 100);
+$paginator = new SuperheroPaginator($connector, $request);
 ```
 
 ## Asynchronous Pagination
