@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Sammyjo20\Package\Paginators;
 
 use Iterator;
+use Saloon\Helpers\Helpers;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
+use GuzzleHttp\Promise\PromiseInterface;
+use Sammyjo20\Package\Traits\HasAsyncPagination;
 
 abstract class Paginator implements Iterator
 {
@@ -70,13 +73,26 @@ abstract class Paginator implements Iterator
     /**
      * Get the current request
      *
-     * @return Response
+     * @return Response|PromiseInterface
      */
-    public function current(): Response
+    public function current(): Response|PromiseInterface
     {
-        return $this->currentResponse = $this->connector->send(
-            $this->applyPagination(clone $this->request)
-        );
+        $request = $this->applyPagination(clone $this->request);
+
+        if ($this->isAsyncPaginationEnabled() === false) {
+            return $this->currentResponse = $this->connector->send($request);
+        }
+
+        $promise = $this->connector->sendAsync($request);
+
+        // When the iterator is at the beginning, we need to force the first response to come
+        // back right away, so we can calculate the next pages we need to get.
+
+        if (is_null($this->currentResponse)) {
+            $this->currentResponse = $promise->wait();
+        }
+
+        return $promise;
     }
 
     /**
@@ -123,6 +139,10 @@ abstract class Paginator implements Iterator
             return true;
         }
 
+        if ($this->isAsyncPaginationEnabled()) {
+            return $this->page < $this->getTotalPages($this->currentResponse);
+        }
+
         return $this->isLastPage($this->currentResponse) === false;
     }
 
@@ -158,6 +178,14 @@ abstract class Paginator implements Iterator
      */
     public function items(): iterable
     {
+        if ($this->isAsyncPaginationEnabled()) {
+            foreach ($this as $promise) {
+                yield $promise;
+            }
+
+            return;
+        }
+
         foreach ($this as $response) {
             foreach ($this->getPageItems($response) as $item) {
                 yield $item;
@@ -168,11 +196,14 @@ abstract class Paginator implements Iterator
     /**
      * Create a collection from the items
      *
+     * @param bool $throughItems
      * @return LazyCollection
      */
-    public function collect(): LazyCollection
+    public function collect(bool $throughItems = true): LazyCollection
     {
-        return LazyCollection::make(fn () => yield from $this->items());
+        return LazyCollection::make(function () use ($throughItems): iterable {
+            return $throughItems ? yield from $this->items() : yield from $this;
+        });
     }
 
     /**
@@ -181,6 +212,19 @@ abstract class Paginator implements Iterator
     public function getTotalResults(): int
     {
         return $this->totalResults;
+    }
+
+    /**
+     * Check if async pagination is enabled
+     *
+     * @return bool
+     */
+    public function isAsyncPaginationEnabled(): bool
+    {
+        return in_array(HasAsyncPagination::class, Helpers::classUsesRecursive($this), true)
+            && method_exists($this, 'getTotalPages')
+            && property_exists($this, 'async')
+            && $this->async === true;
     }
 
     /**
