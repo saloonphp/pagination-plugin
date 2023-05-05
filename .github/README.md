@@ -252,7 +252,7 @@ The collect method requires `illuminate/collections` to be installed, but allows
 items in a `LazyCollection`. You can specify the `throughItems` argument as `false` if you would like a 
 collection of responses instead.
 
-```
+```php
 $paginator = new SuperheroPaginator($connector, $request);
 $collection = $paginator->collect();
 
