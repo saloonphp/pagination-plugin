@@ -39,9 +39,7 @@ trait HasAsyncPagination
      */
     public function pool(callable|int $concurrency = 5, ?callable $responseHandler = null, ?callable $exceptionHandler = null): Pool
     {
-        $this->async();
-
-        return $this->connector->pool($this, $concurrency, $responseHandler, $exceptionHandler);
+        return $this->connector->pool($this->async(), $concurrency, $responseHandler, $exceptionHandler);
     }
 
     /**

@@ -10,3 +10,4 @@
 - [ ] Test for `collect()` method without items
 - [ ] Mocking/Fixture recording for paginators
 - [ ] Iterating through items with async
+- [ ] Consider adding default implementations of all types of paginator
