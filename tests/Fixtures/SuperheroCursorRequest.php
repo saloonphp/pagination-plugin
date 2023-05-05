@@ -7,7 +7,7 @@ namespace Sammyjo20\Package\Tests\Fixtures;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class SuperheroRequest extends Request
+class SuperheroCursorRequest extends Request
 {
     protected Method $method = Method::GET;
 
@@ -18,6 +18,6 @@ class SuperheroRequest extends Request
      */
     public function resolveEndpoint(): string
     {
-        return '/superheroes/per-page';
+        return '/superheroes/cursor';
     }
 }

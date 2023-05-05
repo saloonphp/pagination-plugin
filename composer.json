@@ -19,7 +19,8 @@
         "friendsofphp/php-cs-fixer": "^3.5",
         "pestphp/pest": "^1.21",
         "phpstan/phpstan": "^1.9",
-        "spatie/ray": "^1.33"
+        "spatie/ray": "^1.33",
+        "illuminate/collections": "^10.9"
     },
     "minimum-stability": "stable",
     "autoload": {

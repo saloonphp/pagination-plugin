@@ -6,9 +6,9 @@ namespace Sammyjo20\Package\Tests\Fixtures;
 
 use Saloon\Http\Connector;
 use Saloon\Contracts\Request;
-use Sammyjo20\Package\TestPaginator;
-use Sammyjo20\Package\PagedPaginator;
+use Sammyjo20\Package\TestPagedPaginator;
 use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
+use Sammyjo20\Package\Paginators\PagedPaginator;
 
 class TestConnector extends Connector
 {
@@ -26,6 +26,6 @@ class TestConnector extends Connector
 
     public function paginate(Request $request): PagedPaginator
     {
-        return new TestPaginator($this, $request);
+        return new TestPagedPaginator($this, $request);
     }
 }
