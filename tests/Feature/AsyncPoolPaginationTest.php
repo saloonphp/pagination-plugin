@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Saloon\Contracts\Response;
-use Sammyjo20\Package\TestAsyncOffsetPaginator;
 use Sammyjo20\Package\TestAsyncPagedPaginator;
-use Sammyjo20\Package\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Sammyjo20\Package\TestAsyncOffsetPaginator;
 use Sammyjo20\Package\Tests\Fixtures\TestConnector;
 use Sammyjo20\Package\Tests\Fixtures\SuperheroPagedRequest;
+use Sammyjo20\Package\Tests\Fixtures\SuperheroLimitOffsetRequest;
 
 test('you can make a pool of requests with paged pagination', function () {
     $connector = new TestConnector();
