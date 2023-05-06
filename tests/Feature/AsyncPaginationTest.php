@@ -33,14 +33,14 @@ test('you can paginate asynchronously through many pages of results with paged p
     expect($iteratorCounter)->toEqual(4);
     expect($paginator->getTotalResults())->toEqual(20);
 
-    $mapped = array_map(static fn(array $superhero) => $superhero['id'], $superheroes);
+    $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
 
     expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
 
     // Now we'll test the collect method
 
     $collection = $paginator->collect()
-        ->map(fn(Promise $promise) => $promise->wait()->json('data'))
+        ->map(fn (Promise $promise) => $promise->wait()->json('data'))
         ->collapse()
         ->collect();
 
@@ -73,14 +73,14 @@ test('you can paginate asynchronously through many pages of results with limit-o
     expect($iteratorCounter)->toEqual(4);
     expect($paginator->getTotalResults())->toEqual(20);
 
-    $mapped = array_map(static fn(array $superhero) => $superhero['id'], $superheroes);
+    $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
 
     expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
 
     // Now we'll test the collect method
 
     $collection = $paginator->collect()
-        ->map(fn(Promise $promise) => $promise->wait()->json('data'))
+        ->map(fn (Promise $promise) => $promise->wait()->json('data'))
         ->collapse()
         ->collect();
 

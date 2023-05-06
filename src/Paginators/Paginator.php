@@ -73,8 +73,8 @@ abstract class Paginator implements Iterator
         // are at the end of a page.
 
         $this->connector->middleware()
-            ->onResponse(static fn(Response $response) => $response->throw())
-            ->onResponse(fn(Response $response) => $this->totalResults += count($this->getPageItems($response)));
+            ->onResponse(static fn (Response $response) => $response->throw())
+            ->onResponse(fn (Response $response) => $this->totalResults += count($this->getPageItems($response)));
     }
 
     /**
