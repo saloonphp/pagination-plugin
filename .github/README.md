@@ -12,7 +12,9 @@
 - [ ] Iterating through items with async
 - [ ] Consider adding default implementations of all types of paginator
 - [ ] Test being able to use synchronous pagination with an async paginator (async = false)
-- [ ] Test logic exception if trying to use non-async pagination on an asynchronous paginator
+- [x] Test logic exception if trying to use non-async pagination on an asynchronous paginator
+- [ ] Implement a "max pages" on the paginator, so we don't iterate over many pages
+- [ ] Implement a "starting page" option
 
 ## Docs
 
@@ -26,6 +28,7 @@ new pagination to work in Saloon v3.
 - The `json()` method has been renamed to `items()`
 - Asynchronous support is not added by default but can be implemented by a trait
 - Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted automatically this is useful
+- You can now specify a maximum number of pages to iterate over
 
 ## Synchronous Pagination
 
@@ -271,6 +274,47 @@ $paginator->pool(
     responseHandler: fn () ...
     exceptionHandler: fn () ...
 )->send();
+```
+
+## Other Options
+
+### Maximum Number Of Pages
+
+You may use the `->setMaxPages()` method on the paginator to set a maximum number of pages that have been iterated 
+over. This is useful if you only want to get the first 50 pages, pause and then start again.
+
+```php
+$paginator = new SuperheroPaginator($connector, $request);
+$paginator->setMaxPages(5);
+
+foreach ($paginator as $response) {
+    
+}
+```
+
+### Converting Items Into DTOs
+
+You may customise the paginator items however you like inside the `getPageItems`. You could even convert
+each item into a DTO which will passed through the rest of your paginators.
+
+```php
+use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Saloon\Contracts\Response;
+
+class SuperheroPaginator extends PagedPaginator
+{
+    protected function isLastPage(Response $response): bool
+    {
+        return empty($response->json('next_page_url'));
+    }
+    
+    protected function getPageItems(Response $response): array
+    {
+        $items = $response->json('data') ?? [];
+        
+        return array_map(fn (array $item): object => MyDataObject::fromArray($item))
+    }
+}
 ```
 
 ## Customisation

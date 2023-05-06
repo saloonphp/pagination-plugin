@@ -37,6 +37,13 @@ abstract class Paginator implements Iterator
     protected int $page = 1;
 
     /**
+     * Optional maximum number of pages the paginator is limited to
+     *
+     * @var int|null
+     */
+    protected ?int $maxPages = null;
+
+    /**
      * The current response on the paginator
      *
      * @var Response|null
@@ -66,8 +73,8 @@ abstract class Paginator implements Iterator
         // are at the end of a page.
 
         $this->connector->middleware()
-            ->onResponse(static fn (Response $response) => $response->throw())
-            ->onResponse(fn (Response $response) => $this->totalResults += count($this->getPageItems($response)));
+            ->onResponse(static fn(Response $response) => $response->throw())
+            ->onResponse(fn(Response $response) => $this->totalResults += count($this->getPageItems($response)));
     }
 
     /**
@@ -135,6 +142,10 @@ abstract class Paginator implements Iterator
      */
     public function valid(): bool
     {
+        if (isset($this->maxPages) && $this->page > $this->maxPages) {
+            return false;
+        }
+
         if (is_null($this->currentResponse)) {
             return true;
         }
@@ -225,6 +236,19 @@ abstract class Paginator implements Iterator
             && method_exists($this, 'getTotalPages')
             && property_exists($this, 'async')
             && $this->async === true;
+    }
+
+    /**
+     * Set the maximum number of pages the paginator will iterate over
+     *
+     * @param int|null $maxPages
+     * @return Paginator
+     */
+    public function setMaxPages(?int $maxPages): Paginator
+    {
+        $this->maxPages = $maxPages;
+
+        return $this;
     }
 
     /**
