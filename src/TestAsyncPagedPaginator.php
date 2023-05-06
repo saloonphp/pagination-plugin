@@ -25,6 +25,6 @@ class TestAsyncPagedPaginator extends PagedPaginator
      */
     protected function getTotalPages(Response $response): int
     {
-        return $response->json('to');
+        return (int)ceil($response->json('total') / $response->json('per_page'));
     }
 }

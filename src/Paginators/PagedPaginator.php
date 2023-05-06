@@ -15,7 +15,9 @@ abstract class PagedPaginator extends Paginator
     {
         $request->query()->add('page', $this->page);
 
-        // Todo: Apply per-page logic
+        if (isset($this->perPageLimit)) {
+            $request->query()->add('per_page', $this->perPageLimit);
+        }
 
         return $request;
     }

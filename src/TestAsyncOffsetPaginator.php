@@ -25,6 +25,6 @@ class TestAsyncOffsetPaginator extends OffsetPaginator
      */
     protected function getTotalPages(Response $response): int
     {
-        return ($response->json('total') / count($this->getPageItems($response))) + 1;
+        return (int)ceil($response->json('total') / $this->perPageLimit);
     }
 }

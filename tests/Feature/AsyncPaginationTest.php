@@ -104,3 +104,33 @@ test('if you dont implement the isLastPage on an asynchronous paginator it will 
         //
     }
 });
+
+test('if the paginator returns all the pages in the first page it wont continue', function () {
+    $connector = new TestConnector();
+    $request = new SuperheroPagedRequest();
+    $paginator = new TestAsyncPagedPaginator($connector, $request);
+
+    expect($paginator->isAsyncPaginationEnabled())->toBeFalse();
+
+    $paginator->async();
+
+    expect($paginator->isAsyncPaginationEnabled())->toBeTrue();
+
+    $superheroes = [];
+
+    $iteratorCounter = 0;
+
+    $paginator->setPerPageLimit(100);
+
+    foreach ($paginator as $promise) {
+        $iteratorCounter++;
+        $superheroes = array_merge($superheroes, $promise->wait()->json('data'));
+    }
+
+    expect($iteratorCounter)->toEqual(1);
+    expect($paginator->getTotalResults())->toEqual(20);
+
+    $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
+
+    expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
+});

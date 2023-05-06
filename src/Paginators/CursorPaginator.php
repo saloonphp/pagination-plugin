@@ -18,6 +18,10 @@ abstract class CursorPaginator extends Paginator
             $request->query()->add('cursor', $this->getNextCursor($this->currentResponse));
         }
 
+        if (isset($this->perPageLimit)) {
+            $request->query()->add('per_page', $this->perPageLimit);
+        }
+
         return $request;
     }
 

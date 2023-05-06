@@ -10,11 +10,6 @@ use Saloon\Contracts\Connector;
 abstract class OffsetPaginator extends PagedPaginator
 {
     /**
-     * The per-page limit
-     */
-    protected int $perPageLimit;
-
-    /**
      * Constructor
      */
     public function __construct(Connector $connector, Request $request, int $perPageLimit)

@@ -1,11 +1,11 @@
 ## Todo
 
 - [x] Asynchronous Pagination
-- [ ] Per-page logic
+- [x] Per-page logic
 - [ ] Tests for the middleware (throw and total)
 - [ ] Tests for exception handlers on pools & async requests
 - [ ] Loop protection (if subsequent request is exactly the same)
-- [x] Tests for checking exact iteration count 
+- [x] Tests for checking exact iteration count
 - [x] Tests for `items()` method
 - [x] Test for `collect()` method without items
 - [ ] Mocking/Fixture recording for paginators
@@ -18,21 +18,25 @@
 
 ## Docs
 
-Welcome to Saloon's new pagination. This repo is just a nice place for me to build and test out how I would like the 
+Welcome to Saloon's new pagination. This repo is just a nice place for me to build and test out how I would like the
 new pagination to work in Saloon v3.
 
 ### Summary of changes
+
 - Paginators are now class based, so you define everything inside the paginator class
-- You now need to define `getPageItems` which means you don't need to provide a key to the `items()` or `collect()` method
+- You now need to define `getPageItems` which means you don't need to provide a key to the `items()` or `collect()`
+  method
 - Saloon will now throw exceptions if a paginated request fails, even if people don't add `AlwaysThrowOnErrors` trait
 - The `json()` method has been renamed to `items()`
 - Asynchronous support is not added by default but can be implemented by a trait
-- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted automatically this is useful
+- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted
+  automatically this is useful
 - You can now specify a maximum number of pages to iterate over
 
 ## Synchronous Pagination
 
-I will be using Saloon's super-hero pages as examples for each of the different major pagination types, which are paged, offset and cursor.
+I will be using Saloon's super-hero pages as examples for each of the different major pagination types, which are paged,
+offset and cursor.
 
 ### Paged Pagination
 
@@ -47,7 +51,8 @@ class SuperheroPaginator extends PagedPaginator
 }
 ```
 
-Next, you will be required to implement two methods: `isLastPage` and `getPageItems`. These methods will determine if the paginator
+Next, you will be required to implement two methods: `isLastPage` and `getPageItems`. These methods will determine if
+the paginator
 should get the next page and the array of items in each response respectively.
 
 ```php
@@ -87,7 +92,8 @@ class SuperheroPaginator extends OffsetPaginator
 }
 ```
 
-Next, you will be required to implement two methods: `isLastPage` and `getPageItems`. These methods will determine if the paginator
+Next, you will be required to implement two methods: `isLastPage` and `getPageItems`. These methods will determine if
+the paginator
 should get the next page and the array of items in each response respectively.
 
 ```php
@@ -108,7 +114,8 @@ class SuperheroPaginator extends OffsetPaginator
 }
 ```
 
-When using the paginator, you will need to provide an additional argument to define the "per-page limit" of the paginator
+When using the paginator, you will need to provide an additional argument to define the "per-page limit" of the
+paginator
 this is so Saloon can calculate the limit/offset accordingly.
 
 ```php
@@ -128,7 +135,8 @@ class SuperheroPaginator extends CursorPaginator
 }
 ```
 
-Next, you will be required to implement three methods: `isLastPage` and `getPageItems` and `getNextCursor`. These methods will determine if the paginator
+Next, you will be required to implement three methods: `isLastPage` and `getPageItems` and `getNextCursor`. These
+methods will determine if the paginator
 should get the next page, the array of items in each response and the next cursor respectively.
 
 ```php
@@ -165,7 +173,7 @@ $paginator = new SuperheroPaginator($connector, $request);
 
 ## Asynchronous Pagination
 
-Asynchronous pagination is not provided by default, however adding it is a breeze. The only requirement to use async 
+Asynchronous pagination is not provided by default, however adding it is a breeze. The only requirement to use async
 pagination is that you are able to calculate the **total number of pages** on the fist API response. This is because
 the paginator does not know when the last response is provided.
 
@@ -215,7 +223,8 @@ class SuperheroPaginator extends PagedPaginator
 > **Note**
 > You don't need to define the `isLastPage` when using the trait unless you're using synchronous pagination too.
 
-Now, when using the paginator, make sure to set it in asynchronous mode. When you iterate over each item, you will retrieve a `PromiseInterface` instance and not a response.
+Now, when using the paginator, make sure to set it in asynchronous mode. When you iterate over each item, you will
+retrieve a `PromiseInterface` instance and not a response.
 
 ```php
 $paginator = new SuperheroPaginator($connector, $request);
@@ -239,6 +248,7 @@ foreach($paginator as $response) {
 ```
 
 ### Items Method
+
 The items method will return each item instead of a response, saving you from traversing through multiple arrays
 
 ```php
@@ -250,8 +260,9 @@ foreach($paginator->items() as $superhero) {
 ```
 
 ### Collect Method
-The collect method requires `illuminate/collections` to be installed, but allows you to iterate through your 
-items in a `LazyCollection`. You can specify the `throughItems` argument as `false` if you would like a 
+
+The collect method requires `illuminate/collections` to be installed, but allows you to iterate through your
+items in a `LazyCollection`. You can specify the `throughItems` argument as `false` if you would like a
 collection of responses instead.
 
 ```php
@@ -264,6 +275,7 @@ $collection = $paginator->collect(throughItems: false);
 ```
 
 ### Pools
+
 Pools require your paginator to have the `HasAsyncPagination` trait, but they work just like typical Saloon pools
 
 ```php
@@ -280,7 +292,7 @@ $paginator->pool(
 
 ### Maximum Number Of Pages
 
-You may use the `->setMaxPages()` method on the paginator to set a maximum number of pages that have been iterated 
+You may use the `->setMaxPages()` method on the paginator to set a maximum number of pages that have been iterated
 over. This is useful if you only want to get the first 50 pages, pause and then start again.
 
 ```php
@@ -322,17 +334,24 @@ class SuperheroPaginator extends PagedPaginator
 Often times you will also need to configure the query parameters that Saloon sets to apply the pagination. On each
 of the paginators, you may overwrite the `applyPagination` method and use any query parameter you prefer.
 
+Here you will find how Saloon will select the current page, as well as the per-page or "limit". The API you are
+integrating with may have a different way of applying this, so you can configure this here.
+
 ```php
 class SuperheroPaginator extends PagedPaginator
 {
     protected function applyPagination(Request $request): Request
     {
         $request->query()->add('currentPage', $this->page);
+        
+        if (isset($this->perPageLimit)) {
+            $request->query()->add('limit', $this->perPageLimit);
+        }
 
         return $request;
     }
 }
-```
+````
 
 ## Your own paginators 👀
 

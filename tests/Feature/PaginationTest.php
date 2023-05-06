@@ -17,11 +17,14 @@ test('you can paginate automatically through many pages of results with paged pa
     $paginator = new TestPagedPaginator($connector, $request);
 
     $superheroes = [];
+    $iteratorCounter = 0;
 
     foreach ($paginator as $item) {
+        $iteratorCounter++;
         $superheroes = array_merge($superheroes, $item->json('data'));
     }
 
+    expect($iteratorCounter)->toBe(4);
     expect($paginator->getTotalResults())->toEqual(20);
 
     $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
@@ -113,4 +116,27 @@ test('you can specify the maximum number of pages to iterate over', function () 
     $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
 
     expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+});
+
+test('if the paginator returns all the pages in the first page it wont continue', function () {
+    $connector = new TestConnector();
+    $request = new SuperheroPagedRequest();
+    $paginator = new TestPagedPaginator($connector, $request);
+
+    $superheroes = [];
+    $iteratorCounter = 0;
+
+    $paginator->setPerPageLimit(100);
+
+    foreach ($paginator as $response) {
+        $iteratorCounter++;
+        $superheroes = array_merge($superheroes, $response->json('data'));
+    }
+
+    expect($iteratorCounter)->toEqual(1);
+    expect($paginator->getTotalResults())->toEqual(20);
+
+    $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
+
+    expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
 });

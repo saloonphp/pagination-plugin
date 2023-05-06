@@ -36,6 +36,11 @@ abstract class Paginator implements Iterator
     protected ?int $maxPages = null;
 
     /**
+     * The limit of results per-page
+     */
+    protected ?int $perPageLimit = null;
+
+    /**
      * The current response on the paginator
      */
     protected ?Response $currentResponse = null;
@@ -127,7 +132,7 @@ abstract class Paginator implements Iterator
         }
 
         if ($this->isAsyncPaginationEnabled()) {
-            return $this->page < $this->getTotalPages($this->currentResponse);
+            return $this->page <= $this->getTotalPages($this->currentResponse);
         }
 
         return $this->isLastPage($this->currentResponse) === false;
@@ -209,6 +214,16 @@ abstract class Paginator implements Iterator
     public function setMaxPages(?int $maxPages): Paginator
     {
         $this->maxPages = $maxPages;
+
+        return $this;
+    }
+
+    /**
+     * Set the per-page limit on the response
+     */
+    public function setPerPageLimit(?int $perPageLimit): Paginator
+    {
+        $this->perPageLimit = $perPageLimit;
 
         return $this;
     }
