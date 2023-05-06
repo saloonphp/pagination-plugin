@@ -10,9 +10,6 @@ abstract class PagedPaginator extends Paginator
 {
     /**
      * Apply pagination to the request
-     *
-     * @param Request $request
-     * @return Request
      */
     protected function applyPagination(Request $request): Request
     {

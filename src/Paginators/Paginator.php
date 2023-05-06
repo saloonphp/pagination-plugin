@@ -17,49 +17,36 @@ abstract class Paginator implements Iterator
 {
     /**
      * The connector being paginated
-     *
-     * @var Connector
      */
     protected Connector $connector;
 
     /**
      * The request being paginated
-     *
-     * @var Request
      */
     protected Request $request;
 
     /**
      * Internal Marker For The Current Page
-     *
-     * @var int
      */
     protected int $page = 1;
 
     /**
      * Optional maximum number of pages the paginator is limited to
-     *
-     * @var int|null
      */
     protected ?int $maxPages = null;
 
     /**
      * The current response on the paginator
-     *
-     * @var Response|null
      */
     protected ?Response $currentResponse = null;
 
     /**
      * Total results that have been paginated through
-     *
-     * @var int
      */
     protected int $totalResults = 0;
 
     /**
-     * @param Connector $connector
-     * @param Request $request
+     * Constructor
      */
     public function __construct(Connector $connector, Request $request)
     {
@@ -73,14 +60,12 @@ abstract class Paginator implements Iterator
         // are at the end of a page.
 
         $this->connector->middleware()
-            ->onResponse(static fn (Response $response) => $response->throw())
-            ->onResponse(fn (Response $response) => $this->totalResults += count($this->getPageItems($response)));
+            ->onResponse(static fn(Response $response) => $response->throw())
+            ->onResponse(fn(Response $response) => $this->totalResults += count($this->getPageItems($response)));
     }
 
     /**
      * Get the current request
-     *
-     * @return Response|PromiseInterface
      */
     public function current(): Response|PromiseInterface
     {
@@ -104,8 +89,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Move to the next page
-     *
-     * @return void
      */
     public function next(): void
     {
@@ -116,9 +99,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Apply additional logic on the next page
-     *
-     * @param Response $response
-     * @return void
      */
     protected function onNext(Response $response): void
     {
@@ -127,8 +107,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Get the key of the paginator
-     *
-     * @return int
      */
     public function key(): int
     {
@@ -137,8 +115,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Check if the paginator has another page to retrieve
-     *
-     * @return bool
      */
     public function valid(): bool
     {
@@ -159,8 +135,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Rewind the iterator
-     *
-     * @return void
      */
     public function rewind(): void
     {
@@ -174,8 +148,6 @@ abstract class Paginator implements Iterator
      * Apply additional logic on rewind
      *
      * This may be resetting specific variables on the paginator classes
-     *
-     * @return void
      */
     protected function onRewind(): void
     {
@@ -184,8 +156,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Iterate through the paginator items
-     *
-     * @return iterable
      */
     public function items(): iterable
     {
@@ -206,9 +176,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Create a collection from the items
-     *
-     * @param bool $throughItems
-     * @return LazyCollection
      */
     public function collect(bool $throughItems = true): LazyCollection
     {
@@ -218,7 +185,7 @@ abstract class Paginator implements Iterator
     }
 
     /**
-     * @return int
+     * Get the total number of results
      */
     public function getTotalResults(): int
     {
@@ -227,8 +194,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Check if async pagination is enabled
-     *
-     * @return bool
      */
     public function isAsyncPaginationEnabled(): bool
     {
@@ -240,9 +205,6 @@ abstract class Paginator implements Iterator
 
     /**
      * Set the maximum number of pages the paginator will iterate over
-     *
-     * @param int|null $maxPages
-     * @return Paginator
      */
     public function setMaxPages(?int $maxPages): Paginator
     {
@@ -253,25 +215,16 @@ abstract class Paginator implements Iterator
 
     /**
      * Apply the pagination to the request
-     *
-     * @param Request $request
-     * @return Request
      */
     abstract protected function applyPagination(Request $request): Request;
 
     /**
      * Check if we are on the last page
-     *
-     * @param Response $response
-     * @return bool
      */
     abstract protected function isLastPage(Response $response): bool;
 
     /**
      * Get the results from the page
-     *
-     * @param Response $response
-     * @return array
      */
     abstract protected function getPageItems(Response $response): array;
 }

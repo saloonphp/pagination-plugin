@@ -14,9 +14,6 @@ class TestAsyncOffsetPaginator extends OffsetPaginator
 
     /**
      * Get the results from the page
-     *
-     * @param Response $response
-     * @return array
      */
     protected function getPageItems(Response $response): array
     {
@@ -25,9 +22,6 @@ class TestAsyncOffsetPaginator extends OffsetPaginator
 
     /**
      * Get the total number of pages
-     *
-     * @param Response $response
-     * @return int
      */
     protected function getTotalPages(Response $response): int
     {

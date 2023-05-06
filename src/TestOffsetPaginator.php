@@ -11,9 +11,6 @@ class TestOffsetPaginator extends OffsetPaginator
 {
     /**
      * Check if we are on the last page
-     *
-     * @param Response $response
-     * @return bool
      */
     protected function isLastPage(Response $response): bool
     {
@@ -22,9 +19,6 @@ class TestOffsetPaginator extends OffsetPaginator
 
     /**
      * Get the results from the page
-     *
-     * @param Response $response
-     * @return array
      */
     protected function getPageItems(Response $response): array
     {

@@ -12,15 +12,12 @@ trait HasAsyncPagination
 {
     /**
      * Determines if async is enabled or not
-     *
-     * @var bool
      */
     protected bool $async = false;
 
     /**
      * Check if async is enabled or not
      *
-     * @param bool $async
      * @return $this
      */
     public function async(bool $async = true): static
@@ -32,11 +29,6 @@ trait HasAsyncPagination
 
     /**
      * Create an async pool for the iterator
-     *
-     * @param callable|int $concurrency
-     * @param callable|null $responseHandler
-     * @param callable|null $exceptionHandler
-     * @return Pool
      */
     public function pool(callable|int $concurrency = 5, ?callable $responseHandler = null, ?callable $exceptionHandler = null): Pool
     {
@@ -47,9 +39,6 @@ trait HasAsyncPagination
      * Method used to determine if the paginator is on the last page
      *
      * Note: This is not used for async pagination
-     *
-     * @param Response $response
-     * @return bool
      */
     protected function isLastPage(Response $response): bool
     {
@@ -58,9 +47,6 @@ trait HasAsyncPagination
 
     /**
      * Get the total number of pages
-     *
-     * @param Response $response
-     * @return int
      */
     abstract protected function getTotalPages(Response $response): int;
 }

@@ -11,17 +11,11 @@ abstract class OffsetPaginator extends PagedPaginator
 {
     /**
      * The per-page limit
-     *
-     * @var int
      */
     protected int $perPageLimit;
 
     /**
      * Constructor
-     *
-     * @param Connector $connector
-     * @param Request $request
-     * @param int $perPageLimit
      */
     public function __construct(Connector $connector, Request $request, int $perPageLimit)
     {
@@ -32,9 +26,6 @@ abstract class OffsetPaginator extends PagedPaginator
 
     /**
      * Apply the offset pagination
-     *
-     * @param Request $request
-     * @return Request
      */
     protected function applyPagination(Request $request): Request
     {
@@ -48,8 +39,6 @@ abstract class OffsetPaginator extends PagedPaginator
 
     /**
      * Get the offset for the paginator
-     *
-     * @return int
      */
     protected function getOffset(): int
     {

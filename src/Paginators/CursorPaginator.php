@@ -11,9 +11,6 @@ abstract class CursorPaginator extends Paginator
 {
     /**
      * Apply the pagination to the request
-     *
-     * @param Request $request
-     * @return Request
      */
     protected function applyPagination(Request $request): Request
     {
@@ -26,9 +23,6 @@ abstract class CursorPaginator extends Paginator
 
     /**
      * Get the next cursor
-     *
-     * @param Response $response
-     * @return int|string
      */
     abstract protected function getNextCursor(Response $response): int|string;
 }

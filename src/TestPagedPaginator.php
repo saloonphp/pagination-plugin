@@ -16,9 +16,6 @@ class TestPagedPaginator extends PagedPaginator
 
     /**
      * Get the results from the page
-     *
-     * @param Response $response
-     * @return array
      */
     protected function getPageItems(Response $response): array
     {
