@@ -15,6 +15,7 @@
 - [x] Test logic exception if trying to use non-async pagination on an asynchronous paginator
 - [ ] Implement a "max pages" on the paginator, so we don't iterate over many pages
 - [ ] Implement a "starting page" option
+- [ ] Create a `collectAsync` method
 
 ## Docs
 
