@@ -16,6 +16,7 @@
 - [ ] Implement a "max pages" on the paginator, so we don't iterate over many pages
 - [ ] Implement a "starting page" option
 - [ ] Create a `collectAsync` method
+- [ ] Create "generic" paginators with closures that can be defined to overwrite the functionality to make it easier for people to use
 
 ## Docs
 
