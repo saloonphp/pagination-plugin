@@ -17,6 +17,8 @@
 - [ ] Implement a "starting page" option
 - [ ] Create a `collectAsync` method
 - [ ] Create "generic" paginators with closures that can be defined to overwrite the functionality to make it easier for people to use
+- [ ] Add a method on the connector to create the paginator `$connector->paginate($request)`
+- [ ] Provide a way for people to map paginated items from connectors/requests `implements MapPaginatedItems` which will be really nice to create DTOs
 
 ## Docs
 
