@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sammyjo20\SaloonPagination\Paginators;
 
+use Closure;
 use Iterator;
 use Saloon\Helpers\Helpers;
 use Saloon\Contracts\Request;
@@ -51,6 +52,11 @@ abstract class Paginator implements Iterator
     protected int $totalResults = 0;
 
     /**
+     * Closure for the "beforeRequest" method
+     */
+    protected ?Closure $beforeRequest = null;
+
+    /**
      * Constructor
      */
     public function __construct(Connector $connector, Request $request)
@@ -75,6 +81,8 @@ abstract class Paginator implements Iterator
     public function current(): Response|PromiseInterface
     {
         $request = $this->applyPagination(clone $this->request);
+
+        $request = call_user_func($this->beforeRequest, $request);
 
         if ($this->isAsyncPaginationEnabled() === false) {
             return $this->currentResponse = $this->connector->send($request);
@@ -224,6 +232,27 @@ abstract class Paginator implements Iterator
     public function setPerPageLimit(?int $perPageLimit): Paginator
     {
         $this->perPageLimit = $perPageLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get the original request passed into the paginator
+     */
+    public function getOriginalRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * Set the "beforeRequest" callback
+     *
+     * @param \Closure|null $beforeRequest
+     * @return $this
+     */
+    public function setBeforeRequest(?Closure $beforeRequest): Paginator
+    {
+        $this->beforeRequest = $beforeRequest;
 
         return $this;
     }

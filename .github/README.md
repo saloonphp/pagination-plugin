@@ -1,3 +1,94 @@
+## Suggested Changes (As Per 28th July 2023)
+- No more individual paginator classes but the ability to have one would be really handy
+- Pagination is controlled by interfaces which define the correct `paginate` method
+- We have opinionated pagination classes that have callbacks to customize the logic
+- You can still make your own custom paginator class which uses the new style used in this repo
+- When the interface is found on the request it will use the request's paginate method instead
+  - This is to overwrite the pagination on a per-request basis
+- The ability to define an `beforeRequest(Request $request, Response $lastResponse = null)` callback to customize every request
+- Define an optional "getTotalPages" method for async pagination
+- Keep it all in Saloon core so we can provide the "paginate" method differently on requests?
+
+```php
+use Saloon\Contracts\Request;
+
+public function resolvePaginator(Request $request)
+{
+    return new PagedPaginator(
+        request: $request,
+        isLastPage: static function (Response $response): bool {
+            return empty($response->json('next_page_url'));
+        },
+        getPageItems: static function (Response $response): array {
+            return $response->json('data') ?? [];
+        },
+        // Optional to allow async
+        getTotalPages: static function (Response $response): int {
+            return $response->json('meta.total');
+        },
+    );
+}
+
+// Or maybe to get async support
+
+public function resolvePaginator(Request $request)
+{
+    return PagedPaginator::make(
+        request: $request,
+        isLastPage: static function (Response $response): bool {
+            return empty($response->json('next_page_url'));
+        },
+        getPageItems: static function (Response $response): array {
+            return $response->json('data') ?? [];
+        },
+    )->withAsyncPagination(static function (Response $response): int {
+        return $response->json('meta.total');
+    });
+}
+```
+
+The user must also add a "HasPagination" trait to either the connector or the request so internally
+we will do this.
+
+```php
+public function paginate(Request $request)
+{
+    if ($request instanceof HasPaginator) {
+        return $request->resolvePaginator($request);
+    }
+    
+    return $this->resolvePaginator($request);
+}
+```
+
+I'm not a big fan of `$request->paginate($request)` but it might have to be something we must do.
+
+### Developer Experience
+
+We still want people to be able to do:
+- `$connector->paginate($request)`
+
+But we want people to define their own way of creating a paginator. I think the interfaces should extend a base
+`HasPagination` interface which can be used to detect if a connector/request uses pagination, but it also requires
+the `paginate` method to be defined. With that, you should return a paginator. The only difference is the "offset"
+paginator will have a slightly different request signature.
+
+Paged and Cursor:
+- `paginate($request)`
+
+Offset:
+- `paginate($request, $perPageLimit)`
+
+But what about pagination on a per-request basis? 
+
+`$request->paginate($request)`? 🤔
+
+We could do something like...
+
+`paginate($perPageLimit)->execute($request = null)`
+
+Maybe we should come back to this later.
+
 ## Todo
 
 - [x] Asynchronous Pagination

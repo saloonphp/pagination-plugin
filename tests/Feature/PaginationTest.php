@@ -7,14 +7,17 @@ use Sammyjo20\SaloonPagination\TestPagedPaginator;
 use Sammyjo20\SaloonPagination\TestCursorPaginator;
 use Sammyjo20\SaloonPagination\TestOffsetPaginator;
 use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
+use Sammyjo20\SaloonPagination\Tests\Fixtures\PagedConnector;
 use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
 use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroCursorRequest;
 use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
 
 test('you can paginate automatically through many pages of results with paged pagination', function () {
-    $connector = new TestConnector();
-    $request = new SuperheroPagedRequest();
-    $paginator = new TestPagedPaginator($connector, $request);
+    $connector = new PagedConnector;
+    $request = new SuperheroPagedRequest;
+    $paginator = $connector->paginate($request);
+
+    dd($paginator->isAsyncPaginationEnabled());
 
     $superheroes = [];
     $iteratorCounter = 0;
