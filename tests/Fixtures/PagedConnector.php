@@ -6,12 +6,12 @@ namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
-use Sammyjo20\SaloonPagination\Paginators\Paginator;
+use Sammyjo20\SaloonPagination\Contracts\HasPagedPagination;
 use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
 
-class PagedConnector extends TestConnector
+class PagedConnector extends TestConnector implements HasPagedPagination
 {
-    protected function resolvePaginator(Request $request): Paginator
+    public function paginate(Request $request): PagedPaginator
     {
         return new PagedPaginator(
             connector: $this,

@@ -17,8 +17,6 @@ test('you can paginate automatically through many pages of results with paged pa
     $request = new SuperheroPagedRequest;
     $paginator = $connector->paginate($request);
 
-    dd($paginator->isAsyncPaginationEnabled());
-
     $superheroes = [];
     $iteratorCounter = 0;
 

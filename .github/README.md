@@ -7,7 +7,7 @@
   - This is to overwrite the pagination on a per-request basis
 - The ability to define an `beforeRequest(Request $request, Response $lastResponse = null)` callback to customize every request
 - Define an optional "getTotalPages" method for async pagination
-- Keep it all in Saloon core so we can provide the "paginate" method differently on requests?
+- Also make sure to use the DTO method on the request to cast to DTO
 
 ```php
 use Saloon\Contracts\Request;

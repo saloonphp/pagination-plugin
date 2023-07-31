@@ -82,7 +82,9 @@ abstract class Paginator implements Iterator
     {
         $request = $this->applyPagination(clone $this->request);
 
-        $request = call_user_func($this->beforeRequest, $request);
+        if (isset($this->beforeRequest)) {
+            $request = call_user_func($this->beforeRequest, $request);
+        }
 
         if ($this->isAsyncPaginationEnabled() === false) {
             return $this->currentResponse = $this->connector->send($request);

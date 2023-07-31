@@ -6,12 +6,10 @@ namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
 use Saloon\Http\Connector;
 use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
-use Sammyjo20\SaloonPagination\Traits\HasPagination;
 
 abstract class TestConnector extends Connector
 {
     use AlwaysThrowOnErrors;
-    use HasPagination;
 
     /**
      * Define the base URL of the API.
