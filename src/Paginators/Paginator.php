@@ -12,6 +12,7 @@ use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
+use Sammyjo20\SaloonPagination\Data\PaginatorData;
 use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
 
 abstract class Paginator implements Iterator
@@ -258,6 +259,18 @@ abstract class Paginator implements Iterator
 
         return $this;
     }
+
+    /**
+     * Get page
+     *
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+
 
     /**
      * Apply the pagination to the request

@@ -1,13 +1,4 @@
-## Suggested Changes (As Per 28th July 2023)
-- No more individual paginator classes but the ability to have one would be really handy
-- Pagination is controlled by interfaces which define the correct `paginate` method
-- We have opinionated pagination classes that have callbacks to customize the logic
-- You can still make your own custom paginator class which uses the new style used in this repo
-- When the interface is found on the request it will use the request's paginate method instead
-  - This is to overwrite the pagination on a per-request basis
-- The ability to define an `beforeRequest(Request $request, Response $lastResponse = null)` callback to customize every request
-- Define an optional "getTotalPages" method for async pagination
-- Also make sure to use the DTO method on the request to cast to DTO
+
 
 ```php
 use Saloon\Contracts\Request;
@@ -23,7 +14,7 @@ public function resolvePaginator(Request $request)
             return $response->json('data') ?? [];
         },
         // Optional to allow async
-        getTotalPages: static function (Response $response): int {
+        getTotalPages: static function (Response $response): int {        
             return $response->json('meta.total');
         },
     );
