@@ -36,16 +36,6 @@ trait HasAsyncPagination
     }
 
     /**
-     * Method used to determine if the paginator is on the last page
-     *
-     * Note: This is not used for async pagination
-     */
-    protected function isLastPage(Response $response): bool
-    {
-        throw new LogicException('Please implement the `isLastPage` method on this paginator when not using asynchronous pagination.');
-    }
-
-    /**
      * Get the total number of pages
      */
     abstract protected function getTotalPages(Response $response): int;
