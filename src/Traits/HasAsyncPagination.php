@@ -16,7 +16,7 @@ trait HasAsyncPagination
     protected bool $async = false;
 
     /**
-     * Check if async is enabled or not
+     * Enable or disable async pagination
      *
      * @return $this
      */

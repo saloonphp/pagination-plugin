@@ -17,8 +17,6 @@ test('you can paginate automatically through many pages of results with paged pa
     $request = new SuperheroPagedRequest;
     $paginator = $connector->paginate($request);
 
-    dd($paginator);
-
     $superheroes = [];
     $iteratorCounter = 0;
 
@@ -26,6 +24,8 @@ test('you can paginate automatically through many pages of results with paged pa
         $iteratorCounter++;
         $superheroes = array_merge($superheroes, $item->json('data'));
     }
+
+    dd($superheroes);
 
     expect($iteratorCounter)->toBe(4);
     expect($paginator->getTotalResults())->toEqual(20);
