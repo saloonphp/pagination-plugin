@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
+use Closure;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Sammyjo20\SaloonPagination\Contracts\AsyncPaginator;
@@ -38,9 +39,14 @@ class PagedConnector extends TestConnector implements HasPagination
             /**
              * Get the results from the page
              */
-            protected function getPageItems(Response $response): array
+            protected function getPageItems(Response $response, Closure $convertToDto): array
             {
-                return $response->json('data') ?? [];
+                return $convertToDto();
+            }
+
+            protected function getTotalPages(Response $response): int
+            {
+                return $response->json('total') / $response->json('per_page');
             }
         };
     }

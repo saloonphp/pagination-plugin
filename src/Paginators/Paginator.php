@@ -73,7 +73,11 @@ abstract class Paginator implements Iterator
 
         $this->connector->middleware()
             ->onResponse(static fn (Response $response) => $response->throw())
-            ->onResponse(fn (Response $response) => $this->totalResults += count($this->getPageItems($response)));
+            ->onResponse(function (Response $response) {
+                $pageItems = $this->getPageItems($response, fn () => $this->request->createDtoFromResponse($response));
+
+                return $this->totalResults += count($pageItems);
+            });
     }
 
     /**
@@ -184,7 +188,9 @@ abstract class Paginator implements Iterator
         }
 
         foreach ($this as $response) {
-            foreach ($this->getPageItems($response) as $item) {
+            $pageItems = $this->getPageItems($response, fn () => $this->request->createDtoFromResponse($response));
+
+            foreach ($pageItems as $item) {
                 yield $item;
             }
         }
@@ -285,5 +291,5 @@ abstract class Paginator implements Iterator
     /**
      * Get the results from the page
      */
-    abstract protected function getPageItems(Response $response): array;
+    abstract protected function getPageItems(Response $response, Closure $convertToDto): array;
 }

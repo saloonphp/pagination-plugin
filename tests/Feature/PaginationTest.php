@@ -20,9 +20,11 @@ test('you can paginate automatically through many pages of results with paged pa
     $superheroes = [];
     $iteratorCounter = 0;
 
-    foreach ($paginator as $item) {
+    foreach ($paginator->collect() as $item) {
+        ray($item);
+
         $iteratorCounter++;
-        $superheroes = array_merge($superheroes, $item->json('data'));
+        // $superheroes = array_merge($superheroes, $item);
     }
 
     dd($superheroes);

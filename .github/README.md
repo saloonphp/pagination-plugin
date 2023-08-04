@@ -1,7 +1,22 @@
 ## New Paginator Todo
 - [ ] Add `HasAsyncPagination` to each opinionated paginator
 - [ ] Work out how to use DTOs
-- [ ] When iterating by default it will iterate over items and not responses
+
+## New Paginator Features
+- Use of anonymous classes for beautiful DX
+- Each paginator has async() capabilities by default but you must define an additional method
+- collect() will iterate through individual items by default
+- items() to iterate through each item
+- collect() and items() now work with async and sync (async will return promises for each)
+- There is now `getOriginalRequest` inside of the paginator
+- Because the paginator is an anonymous class you can access the methods of the class like "totalResults"
+- You can now overwrite the $maxPages property on the paginator to set an upper maximum to prevent infinite loops
+  - Maybe we need maxTime?
+- You can add the `HasRequestPagination` on a request and then the following three lines to have pagination on a per-request basis
+- You can use the dto() callable to return DTOs
+
+## Todo
+- DTOs - Do we use the existing DTO conversion logic on the request or have our own?
 
 
 ## Todo
