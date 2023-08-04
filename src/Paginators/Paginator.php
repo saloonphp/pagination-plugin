@@ -291,5 +291,5 @@ abstract class Paginator implements Iterator
     /**
      * Get the results from the page
      */
-    abstract protected function getPageItems(Response $response, Closure $convertToDto): array;
+    abstract protected function getPageItems(Response $response, Closure $useDto): array;
 }

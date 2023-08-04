@@ -39,9 +39,9 @@ class PagedConnector extends TestConnector implements HasPagination
             /**
              * Get the results from the page
              */
-            protected function getPageItems(Response $response, Closure $convertToDto): array
+            protected function getPageItems(Response $response, Closure $useDto): array
             {
-                return $convertToDto();
+                return $useDto();
             }
 
             protected function getTotalPages(Response $response): int
