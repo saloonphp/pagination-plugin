@@ -8,15 +8,42 @@ use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Sammyjo20\SaloonPagination\Contracts\HasPagination;
 use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
+use Sammyjo20\SaloonPagination\Paginators\CursorPaginator;
 use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Sammyjo20\SaloonPagination\Paginators\Paginator;
+use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
 
 class PagedConnector extends TestConnector implements HasPagination
 {
-    public function paginate(Request $request): PagedPaginator
+    public function paginate(Request $request): CursorPaginator
     {
         if ($request instanceof HasRequestPagination) {
             return $request->paginate($this);
         }
+
+        return new class(connector: $this, request: $request) extends CursorPaginator {
+            use HasAsyncPagination;
+
+            protected function getNextCursor(Response $response): int|string
+            {
+                // TODO: Implement getNextCursor() method.
+            }
+
+            protected function isLastPage(Response $response): bool
+            {
+                // TODO: Implement isLastPage() method.
+            }
+
+            protected function getPageItems(Response $response): array
+            {
+                // TODO: Implement getPageItems() method.
+            }
+
+            protected function getTotalPages(Response $response): int
+            {
+                // TODO: Implement getTotalPages() method.
+            }
+        };
 
         return new PagedPaginator(
             connector: $this,
