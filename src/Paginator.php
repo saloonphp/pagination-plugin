@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin;
 
+use InvalidArgumentException;
 use Iterator;
 use Countable;
 use Saloon\Helpers\Helpers;
@@ -12,6 +13,7 @@ use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 abstract class Paginator implements Iterator, Countable
@@ -61,6 +63,10 @@ abstract class Paginator implements Iterator, Countable
      */
     public function __construct(Connector $connector, Request $request)
     {
+        if (! $request instanceof Paginatable) {
+            throw new InvalidArgumentException(sprintf('The request must implement the `%s` interface to be used on paginators.', Paginatable::class));
+        }
+
         $this->connector = $connector;
         $this->request = clone $request;
 

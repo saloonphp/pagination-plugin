@@ -6,8 +6,9 @@ namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 
-class SuperheroPagedRequest extends Request
+class SuperheroPagedRequest extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 

@@ -9,6 +9,7 @@ use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\OffsetConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroCursorRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\UserRequest;
 
 test('you can paginate automatically through many pages of results with paged pagination', function () {
     $connector = new PagedConnector;
@@ -138,4 +139,14 @@ test('if the paginator returns all the pages in the first page it wont continue'
     $mapped = array_map(static fn (array $superhero) => $superhero['id'], $superheroes);
 
     expect($mapped)->toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
+});
+
+test('the paginator will throw an exception if you use a request that is not paginatable', function () {
+    $connector = new PagedConnector;
+    $request = new UserRequest;
+
+    $this->expectException(InvalidArgumentException::class);
+    $this->expectExceptionMessage('The request must implement the `Saloon\PaginationPlugin\Contracts\Paginatable` interface to be used on paginators.');
+
+    $connector->paginate($request);
 });

@@ -6,9 +6,8 @@ namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\PaginationPlugin\Contracts\Paginatable;
 
-class SuperheroCursorRequest extends Request implements Paginatable
+class UserRequest extends Request
 {
     protected Method $method = Method::GET;
 
@@ -17,6 +16,6 @@ class SuperheroCursorRequest extends Request implements Paginatable
      */
     public function resolveEndpoint(): string
     {
-        return '/superheroes/cursor';
+        return '/user';
     }
 }

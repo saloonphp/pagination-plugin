@@ -6,8 +6,9 @@ namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 
-class SuperheroLimitOffsetRequest extends Request
+class SuperheroLimitOffsetRequest extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 
