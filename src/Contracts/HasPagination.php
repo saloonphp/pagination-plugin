@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sammyjo20\SaloonPagination\Contracts;
 
 use Saloon\Contracts\Request;
@@ -9,9 +11,6 @@ interface HasPagination
 {
     /**
      * Paginate
-     *
-     * @param \Saloon\Contracts\Request $request
-     * @return \Sammyjo20\SaloonPagination\Paginators\Paginator
      */
     public function paginate(Request $request): Paginator;
 }

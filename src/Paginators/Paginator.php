@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Sammyjo20\SaloonPagination\Paginators;
 
-use Closure;
-use Countable;
 use Iterator;
+use Countable;
 use Saloon\Helpers\Helpers;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
@@ -72,7 +71,7 @@ abstract class Paginator implements Iterator, Countable
         // are at the end of a page.
 
         $this->connector->middleware()
-            ->onResponse(static fn(Response $response) => $response->throw())
+            ->onResponse(static fn (Response $response) => $response->throw())
             ->onResponse(function (Response $response) {
                 $pageItems = $this->getPageItems($response, $response->getRequest());
 
@@ -242,8 +241,6 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Get page
-     *
-     * @return int
      */
     public function getPage(): int
     {
@@ -252,8 +249,6 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Count the iterator
-     *
-     * @return int
      */
     public function count(): int
     {

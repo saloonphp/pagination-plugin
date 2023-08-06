@@ -7,8 +7,8 @@ namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Sammyjo20\SaloonPagination\Contracts\HasPagination;
-use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
 use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
 
 class PagedConnector extends TestConnector implements HasPagination
 {

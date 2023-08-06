@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sammyjo20\SaloonPagination\Traits;
 
-use LogicException;
 use Saloon\Http\Pool;
 use Saloon\Contracts\Response;
 

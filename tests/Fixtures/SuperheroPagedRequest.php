@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
 
-use Saloon\Contracts\Connector;
-use Saloon\Contracts\Response;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Saloon\Contracts\Response;
+use Saloon\Contracts\Connector;
 use Sammyjo20\SaloonPagination\Paginators\Paginator;
+use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
 
 class SuperheroPagedRequest extends Request implements HasRequestPagination
 {
@@ -25,7 +25,6 @@ class SuperheroPagedRequest extends Request implements HasRequestPagination
     }
 
     /**
-     * @param \Saloon\Contracts\Response $response
      * @return array<\Sammyjo20\SaloonPagination\Tests\Fixtures\Superhero>
      */
     public function createDtoFromResponse(Response $response): array
@@ -44,13 +43,10 @@ class SuperheroPagedRequest extends Request implements HasRequestPagination
 
     /**
      * Paginate
-     *
-     * @param \Saloon\Contracts\Connector $connector
-     * @return \Sammyjo20\SaloonPagination\Paginators\Paginator
      */
     public function paginate(Connector $connector): Paginator
     {
-        return new class (connector: $connector, request: $this) extends PagedPaginator {
+        return new class(connector: $connector, request: $this) extends PagedPaginator {
             /**
              * Check if we are on the last page
              */
