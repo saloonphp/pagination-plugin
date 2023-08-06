@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
-use Sammyjo20\SaloonPagination\TestPagedPaginator;
 use Sammyjo20\SaloonPagination\TestCursorPaginator;
 use Sammyjo20\SaloonPagination\TestOffsetPaginator;
 use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
