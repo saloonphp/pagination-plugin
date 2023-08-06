@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
-use Saloon\Contracts\Response;
 use Saloon\Enums\Method;
-use Saloon\Contracts\Request as RequestContract;
 use Saloon\Http\Request;
-use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
+use Saloon\Contracts\Response;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
+use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
 class MappedPagedRequest extends Request implements Paginatable, MapPaginatedResponseItems
 {

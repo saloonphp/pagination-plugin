@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\UserRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CursorConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\OffsetConnector;
@@ -10,7 +11,6 @@ use Saloon\PaginationPlugin\Tests\Fixtures\Requests\MappedPagedRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroCursorRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
-use Saloon\PaginationPlugin\Tests\Fixtures\Requests\UserRequest;
 
 test('you can paginate automatically through many pages of results with paged pagination', function () {
     $connector = new PagedConnector;

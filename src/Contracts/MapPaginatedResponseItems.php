@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Saloon\PaginationPlugin\Contracts;
 
-use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 
 interface MapPaginatedResponseItems

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin;
 
-use InvalidArgumentException;
 use Iterator;
 use Countable;
 use Saloon\Helpers\Helpers;
+use InvalidArgumentException;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
-use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
 abstract class Paginator implements Iterator, Countable
 {
