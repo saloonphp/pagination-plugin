@@ -1,23 +1,10 @@
-## New Paginator Todo
-- [ ] Add `HasAsyncPagination` to each opinionated paginator
-- [ ] Work out how to use DTOs
+## Things to consider
+- What if a specific request has a different place where the pagination data is stored? (I think define an interface)
 
 ## New Paginator Features
-- Use of anonymous classes for beautiful DX
-- Each paginator has async() capabilities by default but you must define an additional method
-- collect() will iterate through individual items by default
-- items() to iterate through each item
-- collect() and items() now work with async and sync (async will return promises for each)
-- There is now `getOriginalRequest` inside of the paginator
-- Because the paginator is an anonymous class you can access the methods of the class like "totalResults"
 - You can now overwrite the $maxPages property on the paginator to set an upper maximum to prevent infinite loops
   - Maybe we need maxTime?
 - You can add the `HasRequestPagination` on a request and then the following three lines to have pagination on a per-request basis
-- You can use the dto() callable to return DTOs
-
-## Todo
-- DTOs - Do we use the existing DTO conversion logic on the request or have our own?
-
 
 ## Todo
 
@@ -48,14 +35,12 @@ new pagination to work in Saloon v3.
 
 ### Summary of changes
 
-- Paginators are now class based, so you define everything inside the paginator class
-- You now need to define `getPageItems` which means you don't need to provide a key to the `items()` or `collect()`
-  method
-- Saloon will now throw exceptions if a paginated request fails, even if people don't add `AlwaysThrowOnErrors` trait
+- Paginators are now class based and less opinionated - you can still define paginators in your connector but they are defined via anonymous classes.
+- You now need to define `getPageItems` method which tells Saloon where the array of results are on each page. This means `$paginator->collect()` and `$paginator->items()` work out of the box
+- Saloon will now throw exceptions if a paginated request fails, even if people don't add `AlwaysThrowOnErrors` trait (when not using asynchronous pagination)
 - The `json()` method has been renamed to `items()`
 - Asynchronous support is not added by default but can be implemented by a trait
-- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted
-  automatically this is useful
+- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted automatically
 - You can now specify a maximum number of pages to iterate over
 
 ## Synchronous Pagination
