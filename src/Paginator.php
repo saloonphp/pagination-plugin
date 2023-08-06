@@ -13,6 +13,7 @@ use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
+use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
@@ -79,7 +80,11 @@ abstract class Paginator implements Iterator, Countable
         $this->request->middleware()
             ->onResponse(static fn (Response $response) => $response->throw())
             ->onResponse(function (Response $response) {
-                $pageItems = $this->getPageItems($response, $response->getRequest());
+                $request = $response->getRequest();
+
+                $pageItems = $request instanceof MapPaginatedResponseItems
+                    ? $request->mapPaginatedResponseItems($response)
+                    : $this->getPageItems($response, $request);
 
                 return $this->totalResults += count($pageItems);
             });
@@ -180,7 +185,11 @@ abstract class Paginator implements Iterator, Countable
         }
 
         foreach ($this as $response) {
-            $pageItems = $this->getPageItems($response, $response->getRequest());
+            $request = $response->getRequest();
+
+            $pageItems = $request instanceof MapPaginatedResponseItems
+                ? $request->mapPaginatedResponseItems($response)
+                : $this->getPageItems($response, $request);
 
             foreach ($pageItems as $item) {
                 yield $item;
