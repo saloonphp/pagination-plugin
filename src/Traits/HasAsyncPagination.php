@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Traits;
+namespace Saloon\PaginationPlugin\Traits;
 
-use LogicException;
 use Saloon\Http\Pool;
 use Saloon\Contracts\Response;
 
@@ -16,7 +15,7 @@ trait HasAsyncPagination
     protected bool $async = false;
 
     /**
-     * Check if async is enabled or not
+     * Enable or disable async pagination
      *
      * @return $this
      */
@@ -33,16 +32,6 @@ trait HasAsyncPagination
     public function pool(callable|int $concurrency = 5, ?callable $responseHandler = null, ?callable $exceptionHandler = null): Pool
     {
         return $this->connector->pool($this->async(), $concurrency, $responseHandler, $exceptionHandler);
-    }
-
-    /**
-     * Method used to determine if the paginator is on the last page
-     *
-     * Note: This is not used for async pagination
-     */
-    protected function isLastPage(Response $response): bool
-    {
-        throw new LogicException('Please implement the `isLastPage` method on this paginator when not using asynchronous pagination.');
     }
 
     /**

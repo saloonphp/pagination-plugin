@@ -1,3 +1,11 @@
+## Things to consider
+- What if a specific request has a different place where the pagination data is stored? (I think define an interface)
+
+## New Paginator Features
+- You can now overwrite the $maxPages property on the paginator to set an upper maximum to prevent infinite loops
+  - Maybe we need maxTime?
+- You can add the `HasRequestPagination` on a request and then the following three lines to have pagination on a per-request basis
+
 ## Todo
 
 - [x] Asynchronous Pagination
@@ -27,14 +35,12 @@ new pagination to work in Saloon v3.
 
 ### Summary of changes
 
-- Paginators are now class based, so you define everything inside the paginator class
-- You now need to define `getPageItems` which means you don't need to provide a key to the `items()` or `collect()`
-  method
-- Saloon will now throw exceptions if a paginated request fails, even if people don't add `AlwaysThrowOnErrors` trait
+- Paginators are now class based and less opinionated - you can still define paginators in your connector but they are defined via anonymous classes.
+- You now need to define `getPageItems` method which tells Saloon where the array of results are on each page. This means `$paginator->collect()` and `$paginator->items()` work out of the box
+- Saloon will now throw exceptions if a paginated request fails, even if people don't add `AlwaysThrowOnErrors` trait (when not using asynchronous pagination)
 - The `json()` method has been renamed to `items()`
 - Asynchronous support is not added by default but can be implemented by a trait
-- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted
-  automatically this is useful
+- Inside every paginator, you'll be able to access `$this->page` as well as `$this->totalItems` which is counted automatically
 - You can now specify a maximum number of pages to iterate over
 
 ## Synchronous Pagination
@@ -47,7 +53,7 @@ offset and cursor.
 To create a paged paginator, create a class near your connector and extend the `PagedPaginator` abstract class.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 class SuperheroPaginator extends PagedPaginator
 {
@@ -60,8 +66,7 @@ the paginator
 should get the next page and the array of items in each response respectively.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
-use Saloon\Contracts\Response;
+use Saloon\Contracts\Response;use Saloon\PaginationPlugin\PagedPaginator;
 
 class SuperheroPaginator extends PagedPaginator
 {
@@ -88,7 +93,7 @@ $paginator = new SuperheroPaginator($connector, $request);
 To create an offset paginator, create a class near your connector and extend the `OffsetPaginator` abstract class.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\OffsetPaginator;
+use Saloon\PaginationPlugin\OffsetPaginator;
 
 class SuperheroPaginator extends OffsetPaginator
 {
@@ -101,8 +106,7 @@ the paginator
 should get the next page and the array of items in each response respectively.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\OffsetPaginator;
-use Saloon\Contracts\Response;
+use Saloon\Contracts\Response;use Saloon\PaginationPlugin\OffsetPaginator;
 
 class SuperheroPaginator extends OffsetPaginator
 {
@@ -131,7 +135,7 @@ $paginator = new SuperheroPaginator($connector, $request, perPageLimit: 100);
 To create a cursor paginator, create a class near your connector and extend the `CursorPaginator` abstract class.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\CursorPaginator;
+use Saloon\PaginationPlugin\CursorPaginator;
 
 class SuperheroPaginator extends CursorPaginator
 {
@@ -144,8 +148,7 @@ methods will determine if the paginator
 should get the next page, the array of items in each response and the next cursor respectively.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\CursorPaginator;
-use Saloon\Contracts\Response;
+use Saloon\Contracts\Response;use Saloon\PaginationPlugin\CursorPaginator;
 
 class SuperheroPaginator extends CursorPaginator
 {
@@ -184,9 +187,7 @@ the paginator does not know when the last response is provided.
 First, add the `HasAsyncPagination` trait to your paginator.
 
 ```php
-use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
-use Saloon\Contracts\Response;
+use Saloon\Contracts\Response;use Saloon\PaginationPlugin\PagedPaginator;use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 class SuperheroPaginator extends PagedPaginator
 {
@@ -314,8 +315,7 @@ You may customise the paginator items however you like inside the `getPageItems`
 each item into a DTO which will passed through the rest of your paginators.
 
 ```php
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
-use Saloon\Contracts\Response;
+use Saloon\Contracts\Response;use Saloon\PaginationPlugin\PagedPaginator;
 
 class SuperheroPaginator extends PagedPaginator
 {

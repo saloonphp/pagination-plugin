@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Paginators;
+namespace Saloon\PaginationPlugin;
 
+use LogicException;
 use Saloon\Contracts\Request;
+use Saloon\Contracts\Response;
+use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 abstract class PagedPaginator extends Paginator
 {
+    use HasAsyncPagination;
+
     /**
      * Apply pagination to the request
      */
@@ -20,5 +25,13 @@ abstract class PagedPaginator extends Paginator
         }
 
         return $request;
+    }
+
+    /**
+     * Get the total number of pages
+     */
+    protected function getTotalPages(Response $response): int
+    {
+        throw new LogicException('Please implement the `getTotalPages` method on this paginator when using asynchronous pagination.');
     }
 }

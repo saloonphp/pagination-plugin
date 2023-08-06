@@ -3,16 +3,15 @@
 declare(strict_types=1);
 
 use Saloon\Contracts\Response;
-use Sammyjo20\SaloonPagination\TestAsyncPagedPaginator;
-use Sammyjo20\SaloonPagination\TestAsyncOffsetPaginator;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\PagedConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\OffsetConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
 
 test('you can make a pool of requests with paged pagination', function () {
-    $connector = new TestConnector();
+    $connector = new PagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestAsyncPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
     $iteratorCounter = 0;
@@ -33,9 +32,9 @@ test('you can make a pool of requests with paged pagination', function () {
 });
 
 test('you can make a pool of requests with limit-offset pagination', function () {
-    $connector = new TestConnector();
+    $connector = new OffsetConnector;
     $request = new SuperheroLimitOffsetRequest();
-    $paginator = new TestAsyncOffsetPaginator($connector, $request, 5);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
     $iteratorCounter = 0;

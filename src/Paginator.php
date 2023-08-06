@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Paginators;
+namespace Saloon\PaginationPlugin;
 
 use Iterator;
+use Countable;
 use Saloon\Helpers\Helpers;
+use InvalidArgumentException;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
-use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
+use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
-abstract class Paginator implements Iterator
+abstract class Paginator implements Iterator, Countable
 {
     /**
      * The connector being paginated
@@ -29,6 +33,11 @@ abstract class Paginator implements Iterator
      * Internal Marker For The Current Page
      */
     protected int $page = 1;
+
+    /**
+     * When using async this is the total number of pages
+     */
+    protected ?int $totalPages = null;
 
     /**
      * Optional maximum number of pages the paginator is limited to
@@ -55,7 +64,11 @@ abstract class Paginator implements Iterator
      */
     public function __construct(Connector $connector, Request $request)
     {
-        $this->connector = clone $connector;
+        if (! $request instanceof Paginatable) {
+            throw new InvalidArgumentException(sprintf('The request must implement the `%s` interface to be used on paginators.', Paginatable::class));
+        }
+
+        $this->connector = $connector;
         $this->request = clone $request;
 
         // We'll register two middleware. One will force any requests to throw an exception
@@ -64,9 +77,17 @@ abstract class Paginator implements Iterator
         // to increment the total results which can be used to check if we
         // are at the end of a page.
 
-        $this->connector->middleware()
+        $this->request->middleware()
             ->onResponse(static fn (Response $response) => $response->throw())
-            ->onResponse(fn (Response $response) => $this->totalResults += count($this->getPageItems($response)));
+            ->onResponse(function (Response $response) {
+                $request = $response->getRequest();
+
+                $pageItems = $request instanceof MapPaginatedResponseItems
+                    ? $request->mapPaginatedResponseItems($response)
+                    : $this->getPageItems($response, $request);
+
+                return $this->totalResults += count($pageItems);
+            });
     }
 
     /**
@@ -98,16 +119,6 @@ abstract class Paginator implements Iterator
     public function next(): void
     {
         $this->page++;
-
-        $this->onNext($this->currentResponse);
-    }
-
-    /**
-     * Apply additional logic on the next page
-     */
-    protected function onNext(Response $response): void
-    {
-        //
     }
 
     /**
@@ -132,7 +143,7 @@ abstract class Paginator implements Iterator
         }
 
         if ($this->isAsyncPaginationEnabled()) {
-            return $this->page <= $this->getTotalPages($this->currentResponse);
+            return $this->page <= $this->totalPages ??= $this->getTotalPages($this->currentResponse);
         }
 
         return $this->isLastPage($this->currentResponse) === false;
@@ -146,6 +157,7 @@ abstract class Paginator implements Iterator
         $this->page = 1;
         $this->currentResponse = null;
         $this->totalResults = 0;
+        $this->totalPages = null;
         $this->onRewind();
     }
 
@@ -173,7 +185,13 @@ abstract class Paginator implements Iterator
         }
 
         foreach ($this as $response) {
-            foreach ($this->getPageItems($response) as $item) {
+            $request = $response->getRequest();
+
+            $pageItems = $request instanceof MapPaginatedResponseItems
+                ? $request->mapPaginatedResponseItems($response)
+                : $this->getPageItems($response, $request);
+
+            foreach ($pageItems as $item) {
                 yield $item;
             }
         }
@@ -229,6 +247,51 @@ abstract class Paginator implements Iterator
     }
 
     /**
+     * Get the original request passed into the paginator
+     */
+    public function getOriginalRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * Get page
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    /**
+     * Count the iterator
+     */
+    public function count(): int
+    {
+        $this->rewind();
+
+        // When asynchronous pagination is enabled, we can call the `getTotalPages`
+        // method to count the number of pages. This reduces the number of API
+        // calls that we need to make.
+
+        if ($this->isAsyncPaginationEnabled() === true) {
+            return $this->getTotalPages($this->current()->wait());
+        }
+
+        // We are unable to use `iterator_count` because that method only calls
+        // the `next` and `valid` methods on the iterator, and it assumes the
+        // state of loaded items already exists - so in order to keep memory
+        // usage low, we should just iterate through each item and count.
+
+        $count = 0;
+
+        foreach ($this as $ignored) {
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * Apply the pagination to the request
      */
     abstract protected function applyPagination(Request $request): Request;
@@ -241,5 +304,5 @@ abstract class Paginator implements Iterator
     /**
      * Get the results from the page
      */
-    abstract protected function getPageItems(Response $response): array;
+    abstract protected function getPageItems(Response $response, Request $request): array;
 }
