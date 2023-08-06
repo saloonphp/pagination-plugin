@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Traits;
+namespace Saloon\PaginationPlugin\Traits;
 
 use Saloon\Http\Pool;
 use Saloon\Contracts\Response;

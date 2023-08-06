@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Contracts;
+namespace Saloon\PaginationPlugin\Contracts;
 
 use Saloon\Contracts\Connector;
-use Sammyjo20\SaloonPagination\Paginators\Paginator;
+use Saloon\PaginationPlugin\Paginator;
 
 interface HasRequestPagination
 {

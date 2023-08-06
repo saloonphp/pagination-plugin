@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
+namespace Saloon\PaginationPlugin\Tests\Fixtures\Connectors;
 
 use Saloon\Http\Connector;
 use Saloon\Traits\Plugins\AlwaysThrowOnErrors;

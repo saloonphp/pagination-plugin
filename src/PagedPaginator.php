@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Paginators;
+namespace Saloon\PaginationPlugin;
 
-use \LogicException;
+use LogicException;
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
-use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 abstract class PagedPaginator extends Paginator
 {

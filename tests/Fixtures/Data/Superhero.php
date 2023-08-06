@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
+namespace Saloon\PaginationPlugin\Tests\Fixtures\Data;
 
 class Superhero
 {

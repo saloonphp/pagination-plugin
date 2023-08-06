@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-use Sammyjo20\SaloonPagination\TestPagedPaginator;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
 
 test('you can iterate through the items of a paginated resource', function () {
-    $connector = new TestConnector();
+    $connector = new PagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
     $iteratorCounter = 0;

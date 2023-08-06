@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-use Sammyjo20\SaloonPagination\TestPagedPaginator;
-use Sammyjo20\SaloonPagination\TestCursorPaginator;
-use Sammyjo20\SaloonPagination\TestOffsetPaginator;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroCursorRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CursorConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\OffsetConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroCursorRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
 
 test('you can specify a perPageLimit on a paged paginator', function () {
-    $connector = new TestConnector();
+    $connector = new PagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
     $iteratorCounter = 0;
@@ -34,9 +33,9 @@ test('you can specify a perPageLimit on a paged paginator', function () {
 });
 
 test('you can specify a perPageLimit on a limit-offset paginator', function () {
-    $connector = new TestConnector();
+    $connector = new OffsetConnector;
     $request = new SuperheroLimitOffsetRequest();
-    $paginator = new TestOffsetPaginator($connector, $request, 5);
+    $paginator = $connector->paginate($request);
 
     $paginator->setPerPageLimit(10);
 
@@ -57,9 +56,9 @@ test('you can specify a perPageLimit on a limit-offset paginator', function () {
 });
 
 test('you can specify a perPageLimit on a cursor paginator', function () {
-    $connector = new TestConnector();
+    $connector = new CursorConnector;
     $request = new SuperheroCursorRequest();
-    $paginator = new TestCursorPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $paginator->setPerPageLimit(10);
 

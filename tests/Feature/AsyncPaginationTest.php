@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Collection;
-use Sammyjo20\SaloonPagination\TestAsyncPagedPaginator;
-use Sammyjo20\SaloonPagination\TestAsyncOffsetPaginator;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\PagedConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\OffsetConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector as SyncPagedConnector;
 
 test('you can paginate asynchronously through many pages of results with paged pagination', function () {
-    $connector = new TestConnector();
-    $request = new SuperheroPagedRequest();
-    $paginator = new TestAsyncPagedPaginator($connector, $request);
+    $connector = new PagedConnector;
+    $request = new SuperheroPagedRequest;
+    $paginator = $connector->paginate($request);
 
     expect($paginator->isAsyncPaginationEnabled())->toBeFalse();
 
@@ -51,9 +51,9 @@ test('you can paginate asynchronously through many pages of results with paged p
 });
 
 test('you can paginate asynchronously through many pages of results with limit-offset pagination', function () {
-    $connector = new TestConnector();
+    $connector = new OffsetConnector;
     $request = new SuperheroLimitOffsetRequest();
-    $paginator = new TestAsyncOffsetPaginator($connector, $request, 5);
+    $paginator = $connector->paginate($request);
 
     expect($paginator->isAsyncPaginationEnabled())->toBeFalse();
 
@@ -90,15 +90,15 @@ test('you can paginate asynchronously through many pages of results with limit-o
     expect($paginator->getTotalResults())->toEqual(20);
 });
 
-test('if you dont implement the isLastPage on an asynchronous paginator it will throw an exception on synchronous pagination', function () {
-    $connector = new TestConnector();
+test('if you dont implement the getTotalPages method on a paginator it will throw an exception if you try to use async pagination', function () {
+    $connector = new SyncPagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestAsyncPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request)->async();
 
-    expect($paginator->isAsyncPaginationEnabled())->toBeFalse();
+    expect($paginator->isAsyncPaginationEnabled())->toBeTrue();
 
     $this->expectException(LogicException::class);
-    $this->expectExceptionMessage('Please implement the `isLastPage` method on this paginator when not using asynchronous pagination.');
+    $this->expectExceptionMessage('Please implement the `getTotalPages` method on this paginator when using asynchronous pagination.');
 
     foreach ($paginator as $item) {
         //
@@ -106,9 +106,9 @@ test('if you dont implement the isLastPage on an asynchronous paginator it will 
 });
 
 test('if the paginator returns all the pages in the first page it wont continue', function () {
-    $connector = new TestConnector();
+    $connector = new PagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestAsyncPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     expect($paginator->isAsyncPaginationEnabled())->toBeFalse();
 

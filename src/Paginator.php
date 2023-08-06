@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Paginators;
+namespace Saloon\PaginationPlugin;
 
 use Iterator;
 use Countable;
@@ -12,7 +12,7 @@ use Saloon\Contracts\Response;
 use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
-use Sammyjo20\SaloonPagination\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 abstract class Paginator implements Iterator, Countable
 {
@@ -61,7 +61,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function __construct(Connector $connector, Request $request)
     {
-        $this->connector = clone $connector;
+        $this->connector = $connector;
         $this->request = clone $request;
 
         // We'll register two middleware. One will force any requests to throw an exception
@@ -70,7 +70,7 @@ abstract class Paginator implements Iterator, Countable
         // to increment the total results which can be used to check if we
         // are at the end of a page.
 
-        $this->connector->middleware()
+        $this->request->middleware()
             ->onResponse(static fn (Response $response) => $response->throw())
             ->onResponse(function (Response $response) {
                 $pageItems = $this->getPageItems($response, $response->getRequest());
@@ -146,7 +146,7 @@ abstract class Paginator implements Iterator, Countable
         $this->page = 1;
         $this->currentResponse = null;
         $this->totalResults = 0;
-        $this->totalPages = 0;
+        $this->totalPages = null;
         $this->onRewind();
     }
 

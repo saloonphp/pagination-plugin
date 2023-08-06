@@ -3,13 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
-use Sammyjo20\SaloonPagination\TestCursorPaginator;
-use Sammyjo20\SaloonPagination\TestOffsetPaginator;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\TestConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\PagedConnector;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroPagedRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroCursorRequest;
-use Sammyjo20\SaloonPagination\Tests\Fixtures\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CursorConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\OffsetConnector;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroCursorRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
 
 test('you can paginate automatically through many pages of results with paged pagination', function () {
     $connector = new PagedConnector;
@@ -19,14 +18,10 @@ test('you can paginate automatically through many pages of results with paged pa
     $superheroes = [];
     $iteratorCounter = 0;
 
-    foreach ($paginator->collect() as $item) {
-        ray($item);
-
+    foreach ($paginator as $item) {
         $iteratorCounter++;
-        // $superheroes = array_merge($superheroes, $item);
+        $superheroes = array_merge($superheroes, $item->json('data'));
     }
-
-    dd($superheroes);
 
     expect($iteratorCounter)->toBe(4);
     expect($paginator->getTotalResults())->toEqual(20);
@@ -46,9 +41,9 @@ test('you can paginate automatically through many pages of results with paged pa
 });
 
 test('you can paginate automatically through many pages of results with limit-offset pagination', function () {
-    $connector = new TestConnector();
+    $connector = new OffsetConnector;
     $request = new SuperheroLimitOffsetRequest();
-    $paginator = new TestOffsetPaginator($connector, $request, 5);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
 
@@ -73,9 +68,9 @@ test('you can paginate automatically through many pages of results with limit-of
 });
 
 test('you can paginate automatically through many pages of results with cursor pagination', function () {
-    $connector = new TestConnector();
-    $request = new SuperheroCursorRequest();
-    $paginator = new TestCursorPaginator($connector, $request);
+    $connector = new CursorConnector;
+    $request = new SuperheroCursorRequest;
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
 
@@ -100,9 +95,9 @@ test('you can paginate automatically through many pages of results with cursor p
 });
 
 test('you can specify the maximum number of pages to iterate over', function () {
-    $connector = new TestConnector();
+    $connector = new CursorConnector;
     $request = new SuperheroCursorRequest();
-    $paginator = new TestCursorPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $paginator->setMaxPages(2);
 
@@ -123,9 +118,9 @@ test('you can specify the maximum number of pages to iterate over', function () 
 });
 
 test('if the paginator returns all the pages in the first page it wont continue', function () {
-    $connector = new TestConnector();
+    $connector = new PagedConnector;
     $request = new SuperheroPagedRequest();
-    $paginator = new TestPagedPaginator($connector, $request);
+    $paginator = $connector->paginate($request);
 
     $superheroes = [];
     $iteratorCounter = 0;

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
+namespace Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async;
 
 use Saloon\Contracts\Request;
 use Saloon\Contracts\Response;
-use Sammyjo20\SaloonPagination\Contracts\HasPagination;
-use Sammyjo20\SaloonPagination\Paginators\PagedPaginator;
-use Sammyjo20\SaloonPagination\Contracts\HasRequestPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\Contracts\HasRequestPagination;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\TestConnector;
 
 class PagedConnector extends TestConnector implements HasPagination
 {
@@ -35,7 +36,15 @@ class PagedConnector extends TestConnector implements HasPagination
              */
             protected function getPageItems(Response $response, Request $request): array
             {
-                return $request->createDtoFromResponse($response);
+                return $response->json('data') ?? [];
+            }
+
+            /**
+             * Get the total number of pages
+             */
+            protected function getTotalPages(Response $response): int
+            {
+                return (int)($response->json('total') / $response->json('per_page'));
             }
         };
     }

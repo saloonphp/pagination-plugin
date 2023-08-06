@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
+namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class SuperheroCursorRequest extends Request
+class SuperheroPagedRequest extends Request
 {
     protected Method $method = Method::GET;
 
@@ -16,6 +16,6 @@ class SuperheroCursorRequest extends Request
      */
     public function resolveEndpoint(): string
     {
-        return '/superheroes/cursor';
+        return '/superheroes/per-page';
     }
 }

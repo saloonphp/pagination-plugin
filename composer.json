@@ -1,6 +1,6 @@
 {
-    "name": "sammyjo20/saloon-pagination",
-    "description": "Description",
+    "name": "saloonphp/pagination-plugin",
+    "description": "Official Pagination Plugin For Saloon v3",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -25,8 +25,8 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Sammyjo20\\SaloonPagination\\": "src/",
-            "Sammyjo20\\SaloonPagination\\Tests\\": "tests/"
+            "Saloon\\PaginationPlugin\\": "src/",
+            "Saloon\\PaginationPlugin\\Tests\\": "tests/"
         }
     },
     "config": {

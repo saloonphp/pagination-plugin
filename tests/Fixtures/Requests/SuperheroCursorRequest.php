@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Sammyjo20\SaloonPagination\Tests\Fixtures;
+namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class SuperheroLimitOffsetRequest extends Request
+class SuperheroCursorRequest extends Request
 {
     protected Method $method = Method::GET;
 
@@ -16,6 +16,6 @@ class SuperheroLimitOffsetRequest extends Request
      */
     public function resolveEndpoint(): string
     {
-        return '/superheroes/limit-offset';
+        return '/superheroes/cursor';
     }
 }
