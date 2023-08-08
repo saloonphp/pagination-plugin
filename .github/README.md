@@ -1,6 +1,6 @@
 ## Official Pagination Plugin For Saloon v3
 
-This is the official repository for the pagination plugin. This plugin helps you easily iterate through multiple pages of paged items. It has advanced features like mapping to DTOs, converting into LazyCollections and it supports asynchronous requests and pooling.
+This is the official repository for the pagination plugin. This plugin helps you easily iterate through multiple pages of paged items in your API integrations. It has advanced features like mapping to DTOs, converting into LazyCollections, asynchronous requests and pooling!
 
 ### Installation
 You can install the pagination plugin through Composer.
