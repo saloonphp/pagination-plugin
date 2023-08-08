@@ -10,10 +10,10 @@
             "role": "Developer"
         }
     ],
-    "homepage": "https://github.com/sammyjo20",
+    "homepage": "https://github.com/saloonphp/pagination-plugin",
     "require": {
         "php": "^8.1",
-        "sammyjo20/saloon": "^2.6"
+        "sammyjo20/saloon": "^2.8"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.5",
@@ -33,6 +33,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "suggest": {
+        "illuminate/collections": "Used to provide LazyCollections via the collect() method on paginators."
     },
     "scripts": {
         "fix-code": [
