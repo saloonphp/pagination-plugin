@@ -78,15 +78,15 @@ abstract class Paginator implements Iterator, Countable
         // are at the end of a page.
 
         $this->request->middleware()
-            ->onResponse(static fn (Response $response) => $response->throw())
-            ->onResponse(function (Response $response) {
+            ->onResponse(static fn (Response $response): Response => $response->throw())
+            ->onResponse(function (Response $response): void {
                 $request = $response->getRequest();
 
                 $pageItems = $request instanceof MapPaginatedResponseItems
                     ? $request->mapPaginatedResponseItems($response)
                     : $this->getPageItems($response, $request);
 
-                return $this->totalResults += count($pageItems);
+                $this->totalResults += count($pageItems);
             });
     }
 
@@ -173,6 +173,8 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Iterate through the paginator items
+     *
+     * @return iterable<mixed, Response|PromiseInterface>
      */
     public function items(): iterable
     {
@@ -184,6 +186,7 @@ abstract class Paginator implements Iterator, Countable
             return;
         }
 
+        /** @var Response $response */
         foreach ($this as $response) {
             $request = $response->getRequest();
 
@@ -274,7 +277,10 @@ abstract class Paginator implements Iterator, Countable
         // calls that we need to make.
 
         if ($this->isAsyncPaginationEnabled() === true) {
-            return $this->getTotalPages($this->current()->wait());
+            /** @var PromiseInterface $promise */
+            $promise = $this->current();
+
+            return $this->getTotalPages($promise->wait());
         }
 
         // We are unable to use `iterator_count` because that method only calls
@@ -303,6 +309,8 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Get the results from the page
+     *
+     * @return array<mixed, mixed>
      */
     abstract protected function getPageItems(Response $response, Request $request): array;
 }

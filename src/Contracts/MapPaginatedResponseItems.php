@@ -10,6 +10,8 @@ interface MapPaginatedResponseItems
 {
     /**
      * Map the items from the paginator
+     *
+     * @return array<mixed, mixed>
      */
     public function mapPaginatedResponseItems(Response $response): array;
 }

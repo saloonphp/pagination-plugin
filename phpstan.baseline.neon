@@ -1,0 +1,18 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Saloon\\\\PaginationPlugin\\\\Paginator\\:\\:getTotalPages\\(\\)\\.$#"
+			count: 2
+			path: src/Paginator.php
+		-
+		    message: "#^Unable to resolve the template type TMakeKey in call to method static method Illuminate\\\\Support\\\\LazyCollection\\<\\(int\\|string\\)\\,mixed\\>\\:\\:make\\(\\)$#"
+		    count: 1
+		    path: src/Paginator.php
+		-
+		    message: "#^Class Saloon\\\\PaginationPlugin\\\\Paginator implements generic interface Iterator but does not specify its types\\: TKey\\, TValue$#"
+		    count: 1
+		    path: src/Paginator.php
+		-
+		    message: "#^Method Saloon\\\\PaginationPlugin\\\\Paginator\\:\\:collect\\(\\) return type with generic class Illuminate\\\\Support\\\\LazyCollection does not specify its types\\: TKey\\, TValue$#"
+		    count: 1
+		    path: src/Paginator.php
