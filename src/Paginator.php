@@ -6,11 +6,11 @@ namespace Saloon\PaginationPlugin;
 
 use Iterator;
 use Countable;
-use Saloon\Helpers\Helpers;
-use InvalidArgumentException;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 use Saloon\Http\Connector;
+use Saloon\Helpers\Helpers;
+use InvalidArgumentException;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
