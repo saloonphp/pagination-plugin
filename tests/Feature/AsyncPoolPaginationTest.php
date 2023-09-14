@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Saloon\Contracts\Response;
+use Saloon\Http\Response;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\PagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\Async\OffsetConnector;

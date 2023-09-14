@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin\Traits;
 
-use Saloon\Contracts\Pool;
-use Saloon\Contracts\Response;
+use Saloon\Http\Pool;
+use Saloon\Http\Response;
 
 trait HasAsyncPagination
 {

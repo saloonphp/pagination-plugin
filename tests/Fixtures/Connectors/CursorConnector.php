@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin\Tests\Fixtures\Connectors;
 
-use Saloon\Contracts\Request;
-use Saloon\Contracts\Response;
+use Saloon\Http\Request;
+use Saloon\Http\Response;
 use Saloon\PaginationPlugin\CursorPaginator;
 use Saloon\PaginationPlugin\Contracts\HasPagination;
 use Saloon\PaginationPlugin\Contracts\HasRequestPagination;

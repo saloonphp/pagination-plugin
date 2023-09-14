@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Saloon\Contracts\Response;
+use Saloon\Http\Response;
 use Illuminate\Support\Collection;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;

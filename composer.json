@@ -13,7 +13,7 @@
     "homepage": "https://github.com/saloonphp/pagination-plugin",
     "require": {
         "php": "^8.1",
-        "saloonphp/saloon": "^2.8"
+        "saloonphp/saloon": "^v3.0.0-beta.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.5",
