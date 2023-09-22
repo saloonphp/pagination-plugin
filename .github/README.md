@@ -5,7 +5,7 @@ This is the official repository for the pagination plugin. This plugin helps you
 You can install the pagination plugin through Composer.
 
 ```shell
-composer require saloonphp/pagination-plugin
+composer require saloonphp/pagination-plugin "^1.0"
 ```
 
 ### Documentation
