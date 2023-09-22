@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin\Contracts;
 
-use Saloon\Http\Request;
+use Saloon\Contracts\Request;
 use Saloon\PaginationPlugin\Paginator;
 
 interface HasPagination

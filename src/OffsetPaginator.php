@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Saloon\PaginationPlugin;
 
 use LogicException;
-use Saloon\Http\Request;
-use Saloon\Http\Response;
+use Saloon\Contracts\Request;
+use Saloon\Contracts\Response;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 
 abstract class OffsetPaginator extends Paginator

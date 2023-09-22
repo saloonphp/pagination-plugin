@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Saloon\PaginationPlugin\Contracts;
 
-use Saloon\Http\Response;
+use Saloon\Contracts\Response;
 
 interface MapPaginatedResponseItems
 {

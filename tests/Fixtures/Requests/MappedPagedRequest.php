@@ -6,7 +6,7 @@ namespace Saloon\PaginationPlugin\Tests\Fixtures\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Http\Response;
+use Saloon\Contracts\Response;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
 use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
