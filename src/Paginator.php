@@ -6,6 +6,7 @@ namespace Saloon\PaginationPlugin;
 
 use Iterator;
 use Countable;
+use LogicException;
 use Saloon\Helpers\Helpers;
 use InvalidArgumentException;
 use Saloon\Contracts\Request;
@@ -14,6 +15,7 @@ use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
+use Saloon\PaginationPlugin\Exceptions\PaginationException;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
 use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
@@ -60,6 +62,22 @@ abstract class Paginator implements Iterator, Countable
     protected int $totalResults = 0;
 
     /**
+     * Should the pagination plugin check if there is an infinite loop
+     *
+     * @var bool
+     */
+    protected bool $detectInfiniteLoop = true;
+
+    /**
+     * The last five response body checksums
+     *
+     * Used to determine if an infinite loop is happening
+     *
+     * @var array<int ,string>
+     */
+    protected array $lastFiveBodyChecksums = [];
+
+    /**
      * Constructor
      */
     public function __construct(Connector $connector, Request $request)
@@ -87,6 +105,36 @@ abstract class Paginator implements Iterator, Countable
                     : $this->getPageItems($response, $request);
 
                 $this->totalResults += count($pageItems);
+            })
+            ->onResponse(function (Response $response): void {
+                if ($this->detectInfiniteLoop === false) {
+                    return;
+                }
+
+                // We'll start by creating a checksum of the body and appending
+                // it to the array of checksums. If the last five checksums
+                // are the same then we will throw an exception.
+
+                $this->lastFiveBodyChecksums[] = $this->getBodyChecksum($response);
+
+                if (count($this->lastFiveBodyChecksums) < 5) {
+                    return;
+                }
+
+                $allValuesAreTheSame = count(array_unique($this->lastFiveBodyChecksums, SORT_REGULAR)) === 1;
+
+                // When there are five items in the array are the same, we'll throw an exception.
+
+                if ($allValuesAreTheSame === true) {
+                    throw new PaginationException(
+                        'Potential infinite loop detected! The last 5 requests have had exactly the same body. You can use the $detectInfiniteLoop property on your paginator to disable this check.'
+                    );
+                }
+
+                // If all the values are not the same we will simply remove the
+                // oldest item from the array (the first)
+
+                array_shift($this->lastFiveBodyChecksums);
             });
     }
 
@@ -295,6 +343,48 @@ abstract class Paginator implements Iterator, Countable
         }
 
         return $count;
+    }
+
+    /**
+     * Get the checksum from the response body
+     *
+     * @param \Saloon\Contracts\Response $response
+     * @return string
+     */
+    protected function getBodyChecksum(Response $response): string
+    {
+        // Todo: Use getRawStream in Saloon v3
+
+        $temporaryResource = fopen('php://temp', 'wb+');
+
+        if ($temporaryResource === false) {
+            throw new LogicException('Unable to create temporary resource');
+        }
+
+        if ($response->stream()->isSeekable()) {
+            $response->stream()->rewind();
+        }
+
+        $stream = $response->stream();
+
+        while (! $stream->eof()) {
+            fwrite($temporaryResource, $stream->read(1024));
+        }
+
+        rewind($temporaryResource);
+
+        if ($response->stream()->isSeekable()) {
+            $response->stream()->rewind();
+        }
+
+        $context = hash_init('md5');
+        hash_update_stream($context, $temporaryResource);
+
+        $checksum = hash_final($context);
+
+        fclose($temporaryResource);
+
+        return $checksum;
     }
 
     /**

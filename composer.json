@@ -20,7 +20,8 @@
         "pestphp/pest": "^2.6",
         "phpstan/phpstan": "^1.9",
         "spatie/ray": "^1.33",
-        "illuminate/collections": "^10.9"
+        "illuminate/collections": "^10.9",
+        "spatie/invade": "^2.0"
     },
     "minimum-stability": "stable",
     "autoload": {
