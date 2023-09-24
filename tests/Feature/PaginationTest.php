@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
-use Saloon\Http\Faking\MockClient;
-use Saloon\Http\Faking\MockResponse;
-use Saloon\PaginationPlugin\Exceptions\PaginationException;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\UserRequest;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CursorConnector;

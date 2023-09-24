@@ -15,8 +15,8 @@ use Saloon\Contracts\Connector;
 use Illuminate\Support\LazyCollection;
 use GuzzleHttp\Promise\PromiseInterface;
 use Saloon\PaginationPlugin\Contracts\Paginatable;
-use Saloon\PaginationPlugin\Exceptions\PaginationException;
 use Saloon\PaginationPlugin\Traits\HasAsyncPagination;
+use Saloon\PaginationPlugin\Exceptions\PaginationException;
 use Saloon\PaginationPlugin\Contracts\MapPaginatedResponseItems;
 
 abstract class Paginator implements Iterator, Countable
@@ -63,8 +63,6 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Should the pagination plugin check if there is an infinite loop
-     *
-     * @var bool
      */
     protected bool $detectInfiniteLoop = true;
 
@@ -347,9 +345,6 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Get the checksum from the response body
-     *
-     * @param \Saloon\Contracts\Response $response
-     * @return string
      */
     protected function getBodyChecksum(Response $response): string
     {

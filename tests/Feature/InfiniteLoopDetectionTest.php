@@ -1,12 +1,14 @@
 <?php
 
-use Saloon\Exceptions\NoMockResponseFoundException;
+declare(strict_types=1);
+
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use Saloon\Exceptions\NoMockResponseFoundException;
 use Saloon\PaginationPlugin\Exceptions\PaginationException;
-use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\DisabledInfiniteLoopConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\DisabledInfiniteLoopConnector;
 
 test('the pagination plugin can detect a potential infinite loop', function () {
     $mockClient = new MockClient([
