@@ -71,7 +71,7 @@ abstract class Paginator implements Iterator, Countable
      *
      * Used to determine if an infinite loop is happening
      *
-     * @var array<int ,string>
+     * @var array<int, string>
      */
     protected array $lastFiveBodyChecksums = [];
 
