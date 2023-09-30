@@ -104,7 +104,7 @@ abstract class Paginator implements Iterator, Countable
                 $this->totalResults += count($pageItems);
             })
             ->onResponse(function (Response $response): void {
-                if ($this->detectInfiniteLoop === false) {
+                if ($this->detectInfiniteLoop === false || $this->isAsyncPaginationEnabled() === true) {
                     return;
                 }
 
