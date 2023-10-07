@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CustomStartPagePagedConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\PagedConnector;
-use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CursorConnector;
-use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\OffsetConnector;
 use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroPagedRequest;
-use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroCursorRequest;
-use Saloon\PaginationPlugin\Tests\Fixtures\Requests\SuperheroLimitOffsetRequest;
+use Saloon\PaginationPlugin\Tests\Fixtures\Connectors\CustomStartPagePagedConnector;
 
 test('you can specify a start page on a paginator class', function () {
     $connector = new CustomStartPagePagedConnector;
