@@ -31,6 +31,11 @@ abstract class Paginator implements Iterator, Countable
     protected Request $request;
 
     /**
+     * The start page when the paginator is rewound
+     */
+    protected int $startPage = 1;
+
+    /**
      * Internal Marker For The Current Page
      */
     protected int $page = 1;
@@ -199,7 +204,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function rewind(): void
     {
-        $this->page = 1;
+        $this->page = $this->startPage;
         $this->currentResponse = null;
         $this->totalResults = 0;
         $this->totalPages = null;
@@ -308,6 +313,18 @@ abstract class Paginator implements Iterator, Countable
     public function getPage(): int
     {
         return $this->page;
+    }
+
+    /**
+     * Set the start page of the paginator
+     *
+     * Used when the paginator is rewound
+     */
+    public function setStartPage(int $startPage): static
+    {
+        $this->startPage = $startPage;
+
+        return $this;
     }
 
     /**
