@@ -37,8 +37,15 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Internal Marker For The Current Page
+     *
+     * @deprecated Use $currentPage instead
      */
     protected int $page = 1;
+
+    /**
+     * Denotes the current page
+     */
+    protected int $currentPage = 0;
 
     /**
      * When using async this is the total number of pages
@@ -169,6 +176,7 @@ abstract class Paginator implements Iterator, Countable
     public function next(): void
     {
         $this->page++;
+        $this->currentPage++;
     }
 
     /**
@@ -176,7 +184,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function key(): int
     {
-        return $this->page - 1;
+        return $this->currentPage;
     }
 
     /**
@@ -184,7 +192,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function valid(): bool
     {
-        if (isset($this->maxPages) && $this->page > $this->maxPages) {
+        if (isset($this->maxPages) && ($this->currentPage + 1) > $this->maxPages) {
             return false;
         }
 
@@ -193,7 +201,7 @@ abstract class Paginator implements Iterator, Countable
         }
 
         if ($this->isAsyncPaginationEnabled()) {
-            return $this->page <= $this->totalPages ??= $this->getTotalPages($this->currentResponse);
+            return ($this->currentPage + 1) <= $this->totalPages ??= $this->getTotalPages($this->currentResponse);
         }
 
         return $this->isLastPage($this->currentResponse) === false;
@@ -204,6 +212,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function rewind(): void
     {
+        $this->currentPage = max(0, $this->startPage - 1);
         $this->page = $this->startPage;
         $this->currentResponse = null;
         $this->totalResults = 0;
@@ -309,10 +318,20 @@ abstract class Paginator implements Iterator, Countable
 
     /**
      * Get page
+     *
+     * @deprecated Use currentPage() instead
      */
     public function getPage(): int
     {
         return $this->page;
+    }
+
+    /**
+     * Get the current page
+     */
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
     }
 
     /**
