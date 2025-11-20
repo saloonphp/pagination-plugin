@@ -291,7 +291,7 @@ abstract class Paginator implements Iterator, Countable
     /**
      * Set the maximum number of pages the paginator will iterate over
      */
-    public function setMaxPages(?int $maxPages): Paginator
+    public function setMaxPages(?int $maxPages): static
     {
         $this->maxPages = $maxPages;
 
@@ -301,7 +301,7 @@ abstract class Paginator implements Iterator, Countable
     /**
      * Set the per-page limit on the response
      */
-    public function setPerPageLimit(?int $perPageLimit): Paginator
+    public function setPerPageLimit(?int $perPageLimit): static
     {
         $this->perPageLimit = $perPageLimit;
 
