@@ -12,15 +12,14 @@
     ],
     "homepage": "https://github.com/saloonphp/pagination-plugin",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "saloonphp/saloon": "^3.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.5",
-        "pestphp/pest": "^2.6",
+        "pestphp/pest": "^3.0 || ^4.0",
         "phpstan/phpstan": "^1.9",
-        "spatie/ray": "^1.33",
-        "illuminate/collections": "^10.9",
+        "illuminate/collections": "^11.0 || ^12.0",
         "spatie/invade": "^2.0"
     },
     "minimum-stability": "stable",
