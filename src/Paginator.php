@@ -212,6 +212,7 @@ abstract class Paginator implements Iterator, Countable
      */
     public function rewind(): void
     {
+        $this->lastFiveBodyChecksums = [];
         $this->currentPage = max(0, $this->startPage - 1);
         $this->page = $this->startPage;
         $this->currentResponse = null;
